@@ -1,0 +1,26 @@
+<div class="container">
+     <div *ngFor="let item of items">
+          <mat-card class="example-card">
+               <mat-card-header>
+                 <mat-card-title>{{item.title}}</mat-card-title>
+               </mat-card-header>
+               <p>price: {{item.price}}</p>
+               <!-- <button (click)="addToCart(product)" mat-raised-button color="primary">Add</button>
+               <button (click)="removeFromCart(product)" mat-raised-button color="primary">Remove</button> -->
+          </mat-card>
+     </div>
+
+     <div *ngIf="price">
+          <p>
+               Totale Price: {{price}}
+          </p>
+
+          <button routerLink="/pay" mat-raised-button color="warn">Pay</button>
+     </div>
+
+     <div *ngIf="!price">
+          <p>You don't have any items in the cart</p>
+     </div>
+</div>
+
+<router-outlet></router-outlet>

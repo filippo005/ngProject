@@ -1,0 +1,60 @@
+<span class="nameBrand" routerLink="">E-Commerce</span>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+     <h2>Login</h2>
+
+     <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input matInput placeholder="Email" formControlName="email" type="email">
+          <button mat-icon-button matSuffix>
+            <mat-icon>email</mat-icon>
+          </button>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          loginForm.controls['email'].touched &&
+          loginForm.controls['email'].getError('required')">
+          Email is required
+     </div>
+
+     <div class="error" *ngIf="
+          loginForm.controls['email'].touched &&
+          !loginForm.controls['email'].getError('required') &&
+          loginForm.controls['email'].errors">
+          Email not valid
+     </div>
+
+     <mat-form-field>
+          <mat-label>Enter your password</mat-label>
+          <input matInput placeholder="Password" formControlName="password" [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          loginForm.controls['password'].touched &&
+          loginForm.controls['password'].getError('required')">
+          Password is required
+     </div>
+
+     <div class="error" *ngIf="
+          loginForm.controls['password'].touched &&
+          !loginForm.controls['password'].getError('required') &&
+          loginForm.controls['password'].errors">
+          Password must be at least 8 characters
+     </div>
+
+     <div class="error" *ngIf="
+          btn &&
+          !loginForm.controls['email'].touched &&
+          !loginForm.controls['password'].touched">
+          {{dataNotValid}}
+     </div>
+
+     <button #btn mat-raised-button type="submit" color="primary" [disabled]="!loginForm.valid">Login</button>
+
+     <p class="linkTo">Don't you have an account? <span routerLink="../register">Register</span></p>
+</form>
+
+<router-outlet></router-outlet>

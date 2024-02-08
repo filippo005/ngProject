@@ -1,0 +1,79 @@
+<span class="nameBrand" routerLink="">E-Commerce</span>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+     <h2>Register</h2>
+
+     <mat-form-field>
+          <mat-label>Enter your name</mat-label>
+          <input matInput placeholder="Name" formControlName="name" type="text">
+          <button mat-icon-button matSuffix>
+            <mat-icon>person</mat-icon>
+          </button>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          registerForm.controls['name'].touched &&
+          registerForm.controls['name'].getError('required')">
+          Name is required
+     </div>
+
+     <div class="error" *ngIf="
+          registerForm.controls['name'].touched &&
+          !registerForm.controls['name'].getError('required') &&
+          registerForm.controls['name'].errors">
+          Name is required
+     </div>
+
+     <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input matInput placeholder="Email" (ngModelChange)="changeEmailStatus()" formControlName="email" type="email">
+          <button mat-icon-button matSuffix>
+            <mat-icon>email</mat-icon>
+          </button>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          registerForm.controls['email'].touched &&
+          registerForm.controls['email'].getError('required')">
+          Email is required
+     </div>
+
+     <div class="error" *ngIf="
+          registerForm.controls['email'].touched &&
+          !registerForm.controls['email'].getError('required') &&
+          registerForm.controls['email'].errors">
+          Email not valid
+     </div>
+
+     <div class="error" *ngIf="
+          EMAIL_EXISTS">
+          Email is just used
+     </div>
+
+     <mat-form-field>
+          <mat-label>Enter your password</mat-label>
+          <input matInput placeholder="Password" formControlName="password" [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          registerForm.controls['password'].touched &&
+          registerForm.controls['password'].getError('required')">
+          Password is required
+     </div>
+
+     <div class="error" *ngIf="
+          registerForm.controls['password'].touched &&
+          !registerForm.controls['password'].getError('required') &&
+          registerForm.controls['password'].errors">
+          Password must be at least 8 characters
+     </div>
+
+     <button mat-raised-button type="submit" color="primary" [disabled]="!registerForm.valid">Register</button>
+
+     <p class="linkTo">Do you have an account? <span routerLink="../login">Login</span></p>
+</form>
+
+<router-outlet></router-outlet>

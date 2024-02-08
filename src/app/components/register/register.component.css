@@ -1,0 +1,34 @@
+form{
+     position: absolute; top: 50%; left: 50%;
+     transform: translate(-50%, -50%); padding: 20px; border: 0.625px solid rgba(0, 0, 0, 0.2);
+     display: flex; flex-direction: column; border-radius: 6px;
+     width: 360px;
+}
+
+.error{
+     color: red; transform: translateY(-20px);
+}
+
+.example-container mat-form-field + mat-form-field {
+     margin-left: 8px;
+}
+
+.example-right-align {
+     text-align: right;
+}
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+     display: none;
+}
+
+.linkTo{
+     margin-top: 20px; margin-bottom: -10px;
+}
+.linkTo span{
+     color: blue; cursor: pointer; transition: 0.2s linear;
+}
+.nameBrand{
+     cursor: pointer; position: absolute; top: 8%; left: 50%;
+     transform: translate(-50%, -8%); font-size: 30px;
+}

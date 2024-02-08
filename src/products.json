@@ -1,0 +1,22 @@
+{
+     "products": [
+          {
+               "id": 0,
+               "title": "Computer",
+               "price": "55",
+               "category": "Elettronica"
+          },
+          {
+               "id": 1,
+               "title": "Car",
+               "price": "25.000",
+               "category": "Automobili"
+          },
+          {
+               "id": 2,
+               "title": "Ball",
+               "price": "20",
+               "category": "Sport"
+          }
+     ]
+}
