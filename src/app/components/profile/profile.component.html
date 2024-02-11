@@ -72,7 +72,8 @@
      </div>
 
      <div class="error" *ngIf="
-          EMAIL_EXISTS">
+          EMAIL_EXISTS &&
+          !emailForm.controls['email'].touched">
           Email is just used
      </div>
 

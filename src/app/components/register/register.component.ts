@@ -52,13 +52,19 @@ export class RegisterComponent implements OnInit{
         this.registerForm.value.email.trim(),
         this.registerForm.value.password.trim()
       ).subscribe({
-        error: (err) => {
-          if(err.error.error.message == "EMAIL_EXISTS"){
+        next: (data: any) => {
+          if(data.status == 400){
+            this.registerForm.reset();
             this.EMAIL_EXISTS = true;
           }
         },
+        error: (err) => {
+          console.log(err);
+        },
         complete: () => {
-          this.router.navigate(['/login']);
+          if(this.EMAIL_EXISTS == false){
+            this.router.navigate(['/login']);
+          }
         }
       });
     }

@@ -3,6 +3,16 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+
+let transporter = nodemailer.createTransport({
+     service: 'gmail',
+     auth: {
+          user: 'filippo.fili2005@gmail.com',
+          pass: 'edvehyaanedtkypb'
+     }
+});
+
 
 const router = express.Router();
 const userModel = require("../Schemas/userSchema");
@@ -23,7 +33,7 @@ router.post("/register", async (req, res) => {
      await userModel.findOne({email: email})
      .then((user: any) => {
           if(user){
-               res.json({status: res.statusCode});
+               res.json({status: 400});
           }
           else{
                bcrypt.hash(password.toString(), 10, (err, hash) => {
@@ -98,6 +108,31 @@ router.get("/data/:id", async (req, res) => {
      .then((user: any) => {
           res.json({name: user.name, email: user.email});
      })
+});
+
+router.post("/sendEmail", async (req, res) => {
+     const user = await userModel.findOne({email: req.body.email});
+
+     if(user){
+          let mailOptions = {
+               from: "filippo.fili2005@gmail.com",
+               to: req.body.email,
+               subject: "Reimpostare password",
+               text: "Per reimpostare la password clicca qui"
+          };
+
+          transporter.sendMail(mailOptions, (err, data) => {
+               if(err){
+                    res.json({status: 500});
+               }
+               else{
+                    res.json({status: 200});
+               }
+          });
+     }
+     else{
+          res.json({status: 400});
+     }
 });
 
 

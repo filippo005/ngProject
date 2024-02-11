@@ -29,8 +29,13 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginComponent implements OnInit{
   loginForm: FormGroup;
+  emailForm: FormGroup;
+
   dataNotValid: string;
+
   hide = true;
+  formEmail: boolean = false;
+  EMAIL_EXISTS: boolean;
 
   constructor(private authService: AuthService, private router: Router, private cookieService: CookieService){}
 
@@ -39,6 +44,47 @@ export class LoginComponent implements OnInit{
         email: new FormControl(null, [Validators.required, Validators.email]),
         password: new FormControl(null, Validators.required)
       });
+
+      this.emailForm = new FormGroup({
+        email: new FormControl(null, [Validators.required, Validators.email])
+      });
+  }
+
+  openForm(): void{
+    this.formEmail = true;
+  }
+
+  closeForm(): void{
+    this.formEmail = false;
+  }
+
+  changeEmailStatus(){
+    this.EMAIL_EXISTS = true;
+  }
+
+  sendEmail(){
+    this.authService.sendEmail(this.emailForm.value.email.trim()).subscribe({
+      next: (data: any) => {
+        if(data.status == 400){
+          this.emailForm.reset();
+          this.EMAIL_EXISTS = false;
+        }
+        else if(data.status == 500){
+          console.log("Errore del server");
+        }
+        else{
+          console.log("Email inviata con successo");
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        if(this.EMAIL_EXISTS == true){
+          window.location.reload();
+        }
+      }
+    })
   }
 
   onSubmit(){

@@ -2,13 +2,11 @@ form{
      position: absolute; top: 50%; left: 50%;
      transform: translate(-50%, -50%); padding: 20px; border: 0.625px solid rgba(0, 0, 0, 0.2);
      display: flex; flex-direction: column; border-radius: 6px;
-     width: 360px;
+     width: 360px; background: white;
 }
-
 .error{
      color: red; transform: translateY(-20px);
 }
-
 .example-container mat-form-field + mat-form-field {
      margin-left: 8px;
 }
@@ -31,4 +29,28 @@ input.example-right-align::-webkit-inner-spin-button {
 .nameBrand{
      cursor: pointer; position: absolute; top: 8%; left: 50%;
      transform: translate(-50%, -8%); font-size: 30px;
+}
+.psw{
+     color: rgba(0, 0, 0, 0.5); margin: 0 auto;
+     margin-bottom: 10px; margin-top: -5px; cursor: pointer;
+     transition: 0.2s linear;
+}
+.psw:hover{
+     color: rgb(246, 146, 146);
+}
+.btnClose{
+     position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+}
+.close{
+     color: white; transition: 0.2s linear;
+}
+.btnClose:hover .close{
+     color: rgb(246, 146, 146);
+}
+.dark{
+     position: absolute; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);
+     top: 0; z-index: 10;
+}
+.emailForm{
+     z-index: 30;
 }

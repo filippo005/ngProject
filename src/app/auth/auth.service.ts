@@ -32,6 +32,14 @@ export class AuthService {
     return this.http.get(`${this.url}/data/${id}`);
   }
 
+  sendEmail(email: string){
+    const values = {
+      email: email
+    }
+
+    return this.http.post(`${this.url}/sendEmail`, values)
+  }
+
   updateData(id: string, data: string, typeData: number){
     const values = {
       id: id,
