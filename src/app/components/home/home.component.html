@@ -1,87 +1,91 @@
-<mat-sidenav-container class="sideNav" *ngIf="sideNavOpen">
-     <mat-sidenav class="sideNavContent" mode="side" opened>
-          <button (click)="openSideNav()" mat-icon-button class="iconClose">
-               <mat-icon>close</mat-icon>
-          </button>
+<mat-spinner *ngIf="!loaded"></mat-spinner>
 
-          <ul class="listItems">
-               <li (click)="openSideNav()">
-                    <mat-icon>home</mat-icon>
-                    <span>Home</span>
-               </li>
+<div *ngIf="loaded">
+     <mat-sidenav-container class="sideNav" *ngIf="sideNavOpen">
+          <mat-sidenav class="sideNavContent" mode="side" opened>
+               <button (click)="openSideNav()" mat-icon-button class="iconClose">
+                    <mat-icon>close</mat-icon>
+               </button>
 
-               <li routerLink="cart">
-                    <mat-icon>shopping_cart</mat-icon>
-                    <span>Cart</span>
-               </li>
-               <li *ngIf="userName" (click)="onLogout()" class="logout">
-                    <mat-icon>logout</mat-icon>
-                    <span>Logout</span>
-               </li>
-          </ul>
-     </mat-sidenav>
-</mat-sidenav-container>
-
-<div class="dark" *ngIf="sideNavOpen || inputFocus" [ngClass]="inputFocus ? 'inputFocus' : 'side' "></div>
-
-<mat-toolbar class="toolbar">
-     <span class="nameBrand" routerLink="">E-Commerce</span>
-
-     <form class="inputSearch">
-          <div class="inputContainer">
-               <select #category>
-                    <option value="Tutte le categorie" selected>Tutte le categorie</option>
-                    <option value="Automobili">Automobili</option>
-                    <option value="Elettronica">Elettronica</option>
-                    <option value="Sport">Sport</option>
-               </select>
-               <input placeholder="Search..." #searchInput (input)="filterItems()" (blur)="inputBlur()">
-               <mat-icon (click)="searchItems()" class="iconSearch">search</mat-icon>
-          </div>
-
-          <div class="searchList" [ngClass]="inputFocus ? 'searched' : '' ">
                <ul class="listItems">
-                    <li *ngFor="let product of filteredItems">
-                         {{product.title}}
+                    <li (click)="openSideNav()">
+                         <mat-icon>home</mat-icon>
+                         <span>Home</span>
+                    </li>
+
+                    <li routerLink="cart">
+                         <mat-icon>shopping_cart</mat-icon>
+                         <span>Cart</span>
+                    </li>
+                    <li *ngIf="userName" (click)="onLogout()" class="logout">
+                         <mat-icon>logout</mat-icon>
+                         <span>Logout</span>
                     </li>
                </ul>
+          </mat-sidenav>
+     </mat-sidenav-container>
+
+     <div class="dark" *ngIf="sideNavOpen || inputFocus" [ngClass]="inputFocus ? 'inputFocus' : 'side' "></div>
+
+     <mat-toolbar class="toolbar">
+          <span class="nameBrand" routerLink="/">E-Commerce</span>
+
+          <form class="inputSearch">
+               <div class="inputContainer">
+                    <select #category>
+                         <option value="Tutte le categorie" selected>Tutte le categorie</option>
+                         <option value="Automobili">Automobili</option>
+                         <option value="Elettronica">Elettronica</option>
+                         <option value="Sport">Sport</option>
+                    </select>
+                    <input placeholder="Search..." #searchInput (input)="filterItems()" (blur)="inputBlur()">
+                    <mat-icon (click)="searchItems()" class="iconSearch">search</mat-icon>
+               </div>
+
+               <div class="searchList" [ngClass]="inputFocus ? 'searched' : '' ">
+                    <ul class="listItems">
+                         <li *ngFor="let product of filteredItems">
+                              {{product.title}}
+                         </li>
+                    </ul>
+               </div>
+          </form>
+
+          <div *ngIf="userName" class="accountDiv" routerLink="profile">
+               <button mat-raised-button color="warn">
+                    Hi, {{userName}}
+                    <mat-icon>person</mat-icon>
+               </button>
           </div>
-     </form>
 
-     <div *ngIf="userName" class="accountDiv" routerLink="profile">
-          <button mat-raised-button color="warn">
-               Hi, {{userName}}
-               <mat-icon>person</mat-icon>
+          <div *ngIf="!userName" routerLink="login">
+               <button mat-raised-button color="warn" class="iconCart">
+                    Login
+               </button>
+          </div>
+
+          <button mat-icon-button class="iconCart" routerLink="/cart">
+               <mat-icon aria-hidden="false" *ngIf="countCartItems > 0" matBadgeSize="small" [matBadge]="countCartItems" matBadgeColor="warn">shopping_cart</mat-icon>
+               <mat-icon *ngIf="countCartItems == 0">shopping_cart</mat-icon>
           </button>
-     </div>
 
-     <div *ngIf="!userName" routerLink="login">
-          <button mat-raised-button color="warn" class="iconCart">
-               Login
+          <button (click)="openSideNav()" mat-icon-button>
+               <mat-icon class="iconMenu">menu</mat-icon>
           </button>
+     </mat-toolbar>
+
+     <div class="container">
+          <div *ngFor="let product of filteredProducts">
+               <mat-card class="example-card">
+                    <mat-card-header>
+                      <mat-card-title>{{product.title}}</mat-card-title>
+                    </mat-card-header>
+                    <p>price: {{product.price}}$</p>
+                    <button (click)="addToCart(product)" mat-raised-button color="primary">Add</button>
+                    <button (click)="removeFromCart(product)" mat-raised-button color="primary">Remove</button>
+               </mat-card>
+          </div>
      </div>
 
-     <button mat-icon-button class="iconCart" routerLink="/cart">
-          <mat-icon aria-hidden="false" *ngIf="countCartItems > 0" matBadgeSize="small" [matBadge]="countCartItems" matBadgeColor="warn">shopping_cart</mat-icon>
-          <mat-icon *ngIf="countCartItems == 0">shopping_cart</mat-icon>
-     </button>
-
-     <button (click)="openSideNav()" mat-icon-button>
-          <mat-icon class="iconMenu">menu</mat-icon>
-     </button>
-</mat-toolbar>
-
-<div class="container">
-     <div *ngFor="let product of filteredProducts">
-          <mat-card class="example-card">
-               <mat-card-header>
-                 <mat-card-title>{{product.title}}</mat-card-title>
-               </mat-card-header>
-               <p>price: {{product.price}}$</p>
-               <button (click)="addToCart(product)" mat-raised-button color="primary">Add</button>
-               <button (click)="removeFromCart(product)" mat-raised-button color="primary">Remove</button>
-          </mat-card>
-     </div>
+     <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>

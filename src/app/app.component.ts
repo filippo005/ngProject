@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { CartService } from './services/cart.service';
 import { AuthService } from './auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import {jwtDecode} from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,5 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'client';
+export class AppComponent{
 }

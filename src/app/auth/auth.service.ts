@@ -1,14 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../models/userModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   url = "http://localhost:8080/api";
-
-  user: User;
 
   constructor(private http: HttpClient){}
 
@@ -31,20 +28,21 @@ export class AuthService {
     return this.http.post(`${this.url}/login`, values, {withCredentials: true});
   }
 
-  logout(){
-    return this.http.get(`${this.url}/logout`);
+  fetchUserData(id: string){
+    return this.http.get(`${this.url}/data/${id}`);
   }
 
-  createUser(name: string, email: string){
-    this.user = new User(name, email);
-  }
-
-  fetchUserData(email: string){
+  updateData(id: string, data: string, typeData: number){
     const values = {
-      email: email
+      id: id,
+      data: data
     }
-    return this.http.post(`${this.url}/data`, values);
+
+    if(typeData == 0){
+      return this.http.post(`${this.url}/updateName`, values);
+    }
+    else{
+      return this.http.post(`${this.url}/updateEmail`, values);
+    }
   }
-
-
 }

@@ -17,6 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {jwtDecode} from 'jwt-decode';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import productsData from '../../../products.json';
 import { CartService } from '../../services/cart.service';
@@ -40,7 +41,8 @@ import { CartService } from '../../services/cart.service';
     MatInputModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -48,11 +50,12 @@ import { CartService } from '../../services/cart.service';
 export class HomeComponent implements OnInit{
   sideNavOpen: boolean = false;
   inputFocus: boolean = false;
+  loaded: boolean = false;
 
   @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
   @ViewChild('category') category: ElementRef<HTMLSelectElement>;
 
-  userEmail: string;
+  idUser: string;
   userName: string;
   viewDiv: string;
 
@@ -70,22 +73,22 @@ export class HomeComponent implements OnInit{
     ){}
 
   ngOnInit(): void {
-    if(this.cookieService.check('_ssU')){
-      const token = this.cookieService.get('_ssU');
-      const tokenInfo: any = jwtDecode(token);
-      this.userEmail = tokenInfo.email;
-
-      this.authService.fetchUserData(this.userEmail).subscribe({
-        next: (data: any) => {
-          this.userName = data.name;
-          console.log(this.userName);
-        },
-        error: (err) => {
+    setTimeout(() => {
+      if(this.cookieService.check('_ssU')){
+        const token = this.cookieService.get('_ssU');
+        const tokenInfo: any = jwtDecode(token);
+        this.idUser = tokenInfo.id;
+        this.authService.fetchUserData(this.idUser).subscribe({
+          next: (data: any) => {
+            this.userName = data.name;
+          },
+          error: (err) => {
             console.log(err);
-        }
-      })
-    }
-
+          }
+        });
+      }
+      this.loaded = true;
+    }, 1000);
     this.products = productsData.products;
     this.filteredProducts = this.products;
   }
@@ -94,7 +97,7 @@ export class HomeComponent implements OnInit{
     this.sideNavOpen = !this.sideNavOpen;
   }
 
-  searchItems(){
+  searchItems():void {
     this.filteredProducts = this.products.filter((item: any) => {
       if(this.category.nativeElement.value == "Tutte le categorie"){
         return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase());
@@ -107,41 +110,29 @@ export class HomeComponent implements OnInit{
     this.searchInput.nativeElement.value = "";
   }
 
-  filterItems(){
+  filterItems():void {
     this.inputFocus = true;
     this.filteredItems = this.products.filter((item: any) => {
       return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase());
     });
   }
 
-  inputBlur(){
+  inputBlur(): void{
     this.inputFocus = false;
   }
 
-  addToCart(item: {}){
+  addToCart(item: {}):void {
     this.cartService.addItem(item);
     this.countCartItems = this.cartService.items.length;
   }
 
-  removeFromCart(item: {}){
+  removeFromCart(item: {}): void{
     this.cartService.removeItem(item);
     this.countCartItems = this.cartService.items.length;
   }
 
   onLogout(){
-    this.authService.logout().subscribe({
-      next: (data: any) => {
-        if(data.status == 200){
-          this.authService.user = null;
-          this.cookieService.delete('_ssU');
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        this.router.navigate(['/login']);
-      }
-    })
+    this.cookieService.delete('_ssU');
+    this.router.navigate(['/login']);
   }
 }

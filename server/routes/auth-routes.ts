@@ -53,8 +53,8 @@ router.post("/login", async (req, res) => {
                bcrypt.compare(password.toString(), user.password, (err, data) => {
                     if(err) throw err;
                     if(data){
-                         const token = jwt.sign({email: user.email}, user._id.toString());
-                         res.json({status: 200, name: user.name, email: user.email, token: token});
+                         const token = jwt.sign({id: user._id.toString()}, user._id.toString());
+                         res.json({status: 200, id: user._id.toString(), name: user.name, email: user.email, token: token});
                     }
                     else{
                          res.json({status: 401});
@@ -67,18 +67,38 @@ router.post("/login", async (req, res) => {
      })
 });
 
-router.get("/logout", (req, res) => {
-     res.json({status: res.statusCode});
+router.post("/updateName", async (req, res) => {
+     const filter = {_id: req.body.id};
+
+     const result = await userModel.updateOne(filter, {$set: {name: req.body.data}});
+
+     if(result){
+          res.json({status: res.statusCode});
+     }
 });
 
-router.get("/data", async (req, res) => {
-     const email = req.body.email;
+router.post("/updateEmail", async (req, res) => {
+     const user = await userModel.findOne({email: req.body.data});
+     if(!user){
+          const filter = {_id: req.body.id};
 
-     await userModel.findOne({email: email})
+          const result = await userModel.updateOne(filter, {$set: {email: req.body.data}});
+
+          if(result.modifiedCount == 1){
+               res.json({status: 200, message: "Email aggiornata"});
+          }
+     }
+     else{
+          res.json({status: 400});
+     }
+});
+
+router.get("/data/:id", async (req, res) => {
+     await userModel.findOne({_id: req.params.id})
      .then((user: any) => {
-          res.json({name: user.name});
+          res.json({name: user.name, email: user.email});
      })
-})
+});
 
 
 module.exports = router;

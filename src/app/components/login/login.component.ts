@@ -24,7 +24,6 @@ import { CookieService } from 'ngx-cookie-service';
     RouterOutlet,
     RouterLink
   ],
-  providers: [CookieService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -50,7 +49,6 @@ export class LoginComponent implements OnInit{
       ).subscribe({
         next: (data: any) => {
           if(data.status == 200){
-            this.authService.createUser(data.name, data.email);
             this.cookieService.set('_ssU', data.token, {
               path: "/",
               expires: new Date(new Date().getTime() + 3600 * 1000)

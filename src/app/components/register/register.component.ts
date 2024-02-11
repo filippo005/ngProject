@@ -23,7 +23,6 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
     RouterLink,
     RouterOutlet
   ],
-  providers: [AuthService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
