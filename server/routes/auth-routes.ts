@@ -67,12 +67,12 @@ router.post("/login", async (req, res) => {
                          res.json({status: 200, id: user._id.toString(), name: user.name, email: user.email, token: token});
                     }
                     else{
-                         res.json({status: 401});
+                         res.json({status: 400});
                     }
                })
           }
           else{
-               res.json({status: 401});
+               res.json({status: 400});
           }
      })
 });
@@ -146,9 +146,19 @@ router.post("/sendEmail", async (req, res) => {
      }
 });
 
-//far il reset per la password
 router.post('/resetPassword', (req, res) => {
-     console.log(req.body.password);
+     const filter = {_id: req.body.id};
+
+     bcrypt.hash(req.body.password.toString(), 10, async (err, hash) => {
+          const result = await userModel.updateOne(filter, {$set: {password: hash}});
+
+          if(err){
+               res.json({status: 500});
+          }
+          else if(result.modifiedCount == 1){
+               res.json({status: 200});
+          }
+     });
 });
 
 

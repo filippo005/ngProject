@@ -48,7 +48,12 @@ export class ResetPasswordComponent implements OnInit{
   onSubmit(){
     this.authService.updatePassword(this.id, this.form.value.password.trim()).subscribe({
       next: (data: any) => {
-        console.log(data);
+        if(data.status == 500){
+          console.log("Errore server");
+        }
+        else if(data.status == 200){
+          console.log("password resettata");
+        }
       },
       error: (err) => {
         console.log(err);

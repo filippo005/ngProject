@@ -99,6 +99,7 @@ export class LoginComponent implements OnInit{
               path: "/",
               expires: new Date(new Date().getTime() + 3600 * 1000)
             });
+            this.dataNotValid = "";
           }
           else{
             this.loginForm.reset();
@@ -109,7 +110,9 @@ export class LoginComponent implements OnInit{
           console.log(err);
         },
         complete: () => {
-          this.router.navigate(['']);
+          if(!this.dataNotValid){
+            this.router.navigate(['']);
+          }
         }
       })
     }
