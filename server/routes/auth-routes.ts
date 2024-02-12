@@ -118,7 +118,18 @@ router.post("/sendEmail", async (req, res) => {
                from: "filippo.fili2005@gmail.com",
                to: req.body.email,
                subject: "Reimpostare password",
-               text: "Per reimpostare la password clicca qui"
+               html:`
+               <div>
+                    <p>
+                         Per reimpostare la tua passwrd clicca qui
+                         <span>
+                              <a href="http://localhost:4200/resetPassword/${user._id}">
+                                   <button>Reimposta Password</button>
+                              </a>
+                         </span>
+                    </p>
+               </div>
+               `
           };
 
           transporter.sendMail(mailOptions, (err, data) => {
@@ -133,6 +144,11 @@ router.post("/sendEmail", async (req, res) => {
      else{
           res.json({status: 400});
      }
+});
+
+//far il reset per la password
+router.post('/resetPassword', (req, res) => {
+     console.log(req.body.password);
 });
 
 

@@ -40,6 +40,15 @@ export class AuthService {
     return this.http.post(`${this.url}/sendEmail`, values)
   }
 
+  updatePassword(id: string, password: string){
+    const values = {
+      id: id,
+      password: password
+    }
+
+    return this.http.post(`${this.url}/resetPassword`, values);
+  }
+
   updateData(id: string, data: string, typeData: number){
     const values = {
       id: id,
