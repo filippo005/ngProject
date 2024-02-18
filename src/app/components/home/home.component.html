@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="!loaded"></mat-spinner>
+<mat-spinner class="spinner" *ngIf="!loaded" color="warn" diameter="65"></mat-spinner>
 
 <div *ngIf="loaded">
      <mat-sidenav-container class="sideNav" *ngIf="sideNavOpen">
@@ -13,10 +13,16 @@
                          <span>Home</span>
                     </li>
 
+                    <li routerLink="profile">
+                         <mat-icon>person</mat-icon>
+                         <span>Profile</span>
+                    </li>
+
                     <li routerLink="cart">
                          <mat-icon>shopping_cart</mat-icon>
                          <span>Cart</span>
                     </li>
+
                     <li *ngIf="userName" (click)="onLogout()" class="logout">
                          <mat-icon>logout</mat-icon>
                          <span>Logout</span>

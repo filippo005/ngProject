@@ -48,7 +48,9 @@ router.post("/register", async (req, res) => {
                     userModel.create(values)
                     .then((user: any) => {})
                     .catch((err: Error) => console.log(err));
-               })
+
+                    res.json({status: 200});
+               });
           }
      })
 });

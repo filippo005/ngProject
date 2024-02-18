@@ -1,6 +1,7 @@
 <mat-progress-spinner *ngIf="!loaded"></mat-progress-spinner>
 
 <div *ngIf="loaded" class="container">
+     <span class="nameBrand" routerLink="/">E-Commerce</span>
      <div>
           <p>{{userName}}</p>
           <button mat-raised-button color="warm" (click)="updateName()">Modifica</button>

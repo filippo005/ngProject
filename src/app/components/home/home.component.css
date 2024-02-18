@@ -101,3 +101,7 @@ select{
      outline: none; cursor: pointer; border-radius: 5px 0 0 5px; padding: 3px;
      width: max-content;
 }
+.spinner{
+     position: absolute; top: 50%; left: 50%;
+     transform: translate(-50%, -50%);
+}

@@ -57,12 +57,15 @@ export class RegisterComponent implements OnInit{
             this.registerForm.reset();
             this.EMAIL_EXISTS = true;
           }
+          else{
+            this.EMAIL_EXISTS = false;
+          }
         },
         error: (err) => {
           console.log(err);
         },
         complete: () => {
-          if(this.EMAIL_EXISTS == false){
+          if(!this.EMAIL_EXISTS){
             this.router.navigate(['/login']);
           }
         }
