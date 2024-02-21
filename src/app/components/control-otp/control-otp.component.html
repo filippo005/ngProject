@@ -1,3 +1,5 @@
+<span class="nameBrand" routerLink="">E-Commerce</span>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
      <h2>Inserisci il codice OTP inviato per email</h2>
 
@@ -30,3 +32,5 @@
 
      <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Verify</button>
 </form>
+
+<router-outlet></router-outlet>

@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit{
   formName: boolean = false;
   formEmail: boolean = false;
   EMAIL_EXISTS: boolean;
+  errors: boolean;
 
   idUser: string;
   userName: string;
@@ -105,19 +106,21 @@ export class ProfileComponent implements OnInit{
     this.authService.updateData(this.idUser, this.data, this.cod).subscribe({
       next: (data: any) => {
         if(data.status == 200){
-          console.log("aggiornato con successo");
+          this.EMAIL_EXISTS = false;
+          this.errors = false;
         }
         else{
           this.nameForm.reset();
           this.emailForm.reset();
           this.EMAIL_EXISTS = true;
+          this.errors = false;
         }
       },
       error: (err) => {
         console.log(err);
       },
       complete: () => {
-        if(this.EMAIL_EXISTS == false){
+        if(this.EMAIL_EXISTS == false && this.errors == false){
           window.location.reload();
         }
       }
