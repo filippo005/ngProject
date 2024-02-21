@@ -62,4 +62,13 @@ export class AuthService {
       return this.http.post(`${this.url}/updateEmail`, values);
     }
   }
+
+  controlOTP(id: string, otp: number){
+    const values = {
+      id: id,
+      otp: otp
+    };
+
+    return this.http.post(`${this.url}/controlOTP`, values);
+  }
 }

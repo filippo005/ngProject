@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -28,11 +28,12 @@ import {MatButtonModule} from '@angular/material/button';
 export class ResetPasswordComponent implements OnInit{
   form: FormGroup;
 
-  hide: boolean = false;
+  hide: boolean = true;
+  updatePassword: boolean;
 
   id: string;
 
-  constructor(private authService: AuthService, private route: ActivatedRoute){}
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router){}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -49,17 +50,22 @@ export class ResetPasswordComponent implements OnInit{
     this.authService.updatePassword(this.id, this.form.value.password.trim()).subscribe({
       next: (data: any) => {
         if(data.status == 500){
-          console.log("Errore server");
+          this.form.reset();
+          this.updatePassword = false;
         }
         else if(data.status == 200){
-          console.log("password resettata");
+          this.updatePassword = true;
         }
       },
       error: (err) => {
         console.log(err);
       },
       complete: () => {
-
+        if(this.updatePassword){
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1000);
+        }
       }
     })
   }

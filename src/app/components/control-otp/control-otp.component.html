@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+     <h2>Inserisci il codice OTP inviato per email</h2>
+
+     <mat-form-field>
+          <mat-label>Enter your OTP code</mat-label>
+          <input matInput placeholder="OTP" formControlName="otp" type="text" maxlength="8">
+          <button type="button" mat-icon-button matSuffix>
+            <mat-icon>pin</mat-icon>
+          </button>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          form.controls['otp'].touched &&
+          form.controls['otp'].getError('required')">
+          OTP required
+     </div>
+
+     <div class="error" *ngIf="
+          form.controls['otp'].touched &&
+          !form.controls['otp'].getError('required') &&
+          form.controls['otp'].errors">
+          OTP must be 8 characters
+     </div>
+
+     <div class="error" *ngIf="
+          rigthOTP == false &&
+          !form.controls['otp'].touched">
+          OTP is wrong
+     </div>
+
+     <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Verify</button>
+</form>

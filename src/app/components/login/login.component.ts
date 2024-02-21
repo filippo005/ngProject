@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit{
   emailForm: FormGroup;
 
   dataNotValid: string;
+  userId: string;
 
   hide = true;
   formEmail: boolean = false;
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit{
           console.log("Errore del server");
         }
         else{
-          console.log("Email inviata con successo");
+          this.userId = data.id;
         }
       },
       error: (err) => {
@@ -81,7 +82,9 @@ export class LoginComponent implements OnInit{
       },
       complete: () => {
         if(this.EMAIL_EXISTS == true){
-          window.location.reload();
+          setTimeout(() => {
+            this.router.navigate([`/controlOTP/${this.userId}`]);
+          }, 1000);
         }
       }
     })

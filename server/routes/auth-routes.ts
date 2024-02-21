@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
+import otp from 'otp-generator';
 
 let transporter = nodemailer.createTransport({
      service: 'gmail',
@@ -42,7 +43,8 @@ router.post("/register", async (req, res) => {
                     const values = {
                          name: name,
                          email: email,
-                         password: hash
+                         password: hash,
+                         code: ""
                     };
 
                     userModel.create(values)
@@ -116,36 +118,53 @@ router.post("/sendEmail", async (req, res) => {
      const user = await userModel.findOne({email: req.body.email});
 
      if(user){
+          const OTP = otp.generate(8, {lowerCaseAlphabets: true, upperCaseAlphabets: true, specialChars: false, digits: true});
           let mailOptions = {
                from: "filippo.fili2005@gmail.com",
                to: req.body.email,
                subject: "Reimpostare password",
                html:`
                <div>
-                    <p>
-                         Per reimpostare la tua passwrd clicca qui
-                         <span>
-                              <a href="http://localhost:4200/resetPassword/${user._id}">
-                                   <button>Reimposta Password</button>
-                              </a>
-                         </span>
-                    </p>
+                    <p>Ecco il codice OTP da inserire per reimpostare la tua password</p>
+                    <b>${OTP}</b>
                </div>
                `
           };
+
+          bcrypt.hash(OTP.toString(), 10, async (err, hash) => {
+               if(err) throw err;
+
+               await userModel.updateOne({email: req.body.email}, {$set: {code: hash}});
+          });
 
           transporter.sendMail(mailOptions, (err, data) => {
                if(err){
                     res.json({status: 500});
                }
                else{
-                    res.json({status: 200});
+                    res.json({status: 200, id: user._id});
                }
           });
      }
      else{
           res.json({status: 400});
      }
+});
+
+router.post('/controlOTP', async (req, res) => {
+     const OTP = req.body.otp;
+     const user = await userModel.findOne({_id: req.body.id});
+
+     bcrypt.compare(OTP.toString(), user.code, (err, data) => {
+          if(err) throw err;
+
+          if(data){
+               res.json({status: 200});
+          }
+          else{
+               res.json({status: 400});
+          }
+     })
 });
 
 router.post('/resetPassword', (req, res) => {
