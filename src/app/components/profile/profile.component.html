@@ -1,15 +1,28 @@
 <mat-spinner class="spinner" *ngIf="!loaded" color="warn" diameter="65"></mat-spinner>
 
+<span class="nameBrand" routerLink="/">E-Commerce</span>
+
 <div *ngIf="loaded" class="container">
-     <span class="nameBrand" routerLink="/">E-Commerce</span>
-     <div>
-          <p>{{userName}}</p>
-          <button mat-raised-button color="warm" (click)="updateName()">Modifica</button>
+     <h1 class="titleAccount">Account</h1>
+
+     <hr>
+
+     <div class="divData">
+          <div class="data">
+               <b>Name:</b>
+               <span>{{userName}}</span>
+          </div>
+          <button mat-raised-button color="warn" (click)="updateName()">Modifica</button>
      </div>
 
-     <div>
-          <p>{{emailUser}}</p>
-          <button mat-raised-button color="warm" (click)="updateEmail()">Modifica</button>
+     <hr>
+
+     <div class="divData">
+          <div class="data">
+               <b>Email:</b>
+               <span>{{emailUser}}</span>
+          </div>
+          <button mat-raised-button color="warn" (click)="updateEmail()">Modifica</button>
      </div>
 </div>
 

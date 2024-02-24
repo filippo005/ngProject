@@ -4,19 +4,22 @@
                "id": 0,
                "title": "Computer",
                "price": "55",
-               "category": "Elettronica"
+               "category": "Elettronica",
+               "quantity": 1
           },
           {
                "id": 1,
                "title": "Car",
                "price": "25.000",
-               "category": "Automobili"
+               "category": "Automobili",
+               "quantity": 1
           },
           {
                "id": 2,
                "title": "Ball",
                "price": "20",
-               "category": "Sport"
+               "category": "Sport",
+               "quantity": 1
           }
      ]
 }

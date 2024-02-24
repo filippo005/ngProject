@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 import {MatButtonModule} from '@angular/material/button';
 import { AuthService } from '../../auth/auth.service';
@@ -108,6 +108,7 @@ export class HomeComponent implements OnInit{
       }
     });
     this.searchInput.nativeElement.value = "";
+    this.inputFocus = false;
   }
 
   filterItems():void {
@@ -117,7 +118,27 @@ export class HomeComponent implements OnInit{
     });
   }
 
-  inputBlur(): void{
+  //@HostListener('document:click) => sta in ascolto di tutti i click che avvengono in tutto il documento
+  @HostListener('document:click', ['$event'])
+  onClick(event: any){
+    const form = document.getElementById('form');
+
+    if(form && !form.contains(event.target)){
+      this.inputFocus = false;
+    }
+  }
+
+  searchFilter(title: string){
+    this.filteredProducts = this.products.filter((item: any) => {
+      if(this.category.nativeElement.value == "Tutte le categorie"){
+        return item.title.toLowerCase().includes(title.toLowerCase());
+      }
+      else{
+        return item.title.toLowerCase().includes(title.toLowerCase()) &&
+        item.category == this.category.nativeElement.value;
+      }
+    });
+    this.searchInput.nativeElement.value = "";
     this.inputFocus = false;
   }
 

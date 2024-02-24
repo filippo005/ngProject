@@ -1,0 +1,15 @@
+.card{
+     display: flex;
+}
+.cardContent{
+     display: flex; align-items: center; justify-content: space-evenly;
+}
+.divQuantity{
+     display: flex; align-items: center; justify-content: center;
+     padding: 6px;
+}
+.divQuantity div{
+     align-items: center; display: flex; cursor: pointer;
+     border-radius: 6px; border: none; background: rgba(0, 0, 0, 0.1);
+     padding: 1px; margin: 0 5px; font-size: 20px;
+}
