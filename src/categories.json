@@ -1,0 +1,12 @@
+{
+     "categories": [
+          {"value": "Elettronica"},
+          {"value": "Automobili"},
+          {"value": "Moda"},
+          {"value": "Abbigliamento"},
+          {"value": "Sport"},
+          {"value": "Libri"},
+          {"value": "Videogiochi"},
+          {"value": "Salute"}
+     ]
+}

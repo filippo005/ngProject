@@ -38,13 +38,11 @@ input.example-right-align::-webkit-inner-spin-button {
 .psw:hover{
      color: rgb(246, 146, 146);
 }
-.btnClose{
-     position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
-}
 .close{
-     color: white; transition: 0.2s linear;
+     position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+     color: white; transition: 0.2s linear; cursor: pointer;
 }
-.btnClose:hover .close{
+.close:hover{
      color: rgb(246, 146, 146);
 }
 .dark{

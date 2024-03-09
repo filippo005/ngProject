@@ -19,8 +19,9 @@ import {jwtDecode} from 'jwt-decode';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
-import productsData from '../../../products.json';
 import { CartService } from '../../services/cart.service';
+import { ProductService } from '../../services/product.service';
+import categoriesList from '../../../categories.json';
 
 
 @Component({
@@ -59,20 +60,41 @@ export class HomeComponent implements OnInit{
   userName: string;
   viewDiv: string;
 
+  beforeProducts: any;
   products: any;
   filteredProducts: any;
   filteredItems: any;
+  categories: any;
 
-  countCartItems: number = this.cartService.items.length;
+  countCartItems: number = 0;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private cookieService: CookieService,
-    private cartService: CartService
+    private cartService: CartService,
+    private productService: ProductService
     ){}
 
   ngOnInit(): void {
+    this.productService.getProducts().subscribe({
+      next: (data: any) => {
+        if(data.status == 200){
+          this.beforeProducts = data.products;
+        }
+        else{
+          console.log("Non ci sono prodotti");
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        this.products = this.beforeProducts;
+        this.filteredProducts = this.beforeProducts;
+      }
+    });
+
     setTimeout(() => {
       if(this.cookieService.check('_ssU')){
         const token = this.cookieService.get('_ssU');
@@ -87,10 +109,16 @@ export class HomeComponent implements OnInit{
           }
         });
       }
+
       this.loaded = true;
     }, 1000);
-    this.products = productsData.products;
-    this.filteredProducts = this.products;
+
+    categoriesList.categories.sort((a:any, b:any) => {
+      if(a.value < b.value) return -1;
+      if(a.value > b.value) return 1;
+      return 0;
+    });
+    this.categories = categoriesList.categories;
   }
 
   openSideNav(): void{
@@ -100,10 +128,10 @@ export class HomeComponent implements OnInit{
   searchItems():void {
     this.filteredProducts = this.products.filter((item: any) => {
       if(this.category.nativeElement.value == "Tutte le categorie"){
-        return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase());
+        return item.name.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase());
       }
       else{
-        return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase()) &&
+        return item.name.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase()) &&
         item.category == this.category.nativeElement.value;
       }
     });
@@ -114,7 +142,7 @@ export class HomeComponent implements OnInit{
   filterItems():void {
     this.inputFocus = true;
     this.filteredItems = this.products.filter((item: any) => {
-      return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase());
+      return item.name.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase());
     });
   }
 
@@ -128,13 +156,13 @@ export class HomeComponent implements OnInit{
     }
   }
 
-  searchFilter(title: string){
+  searchFilter(name: string){
     this.filteredProducts = this.products.filter((item: any) => {
       if(this.category.nativeElement.value == "Tutte le categorie"){
-        return item.title.toLowerCase().includes(title.toLowerCase());
+        return item.name.toLowerCase().includes(name.toLowerCase());
       }
       else{
-        return item.title.toLowerCase().includes(title.toLowerCase()) &&
+        return item.name.toLowerCase().includes(name.toLowerCase()) &&
         item.category == this.category.nativeElement.value;
       }
     });
@@ -142,14 +170,18 @@ export class HomeComponent implements OnInit{
     this.inputFocus = false;
   }
 
-  addToCart(item: {}):void {
-    this.cartService.addItem(item);
-    this.countCartItems = this.cartService.items.length;
-  }
-
-  removeFromCart(item: {}): void{
-    this.cartService.removeItem(item);
-    this.countCartItems = this.cartService.items.length;
+  addToCart(itemId: string): void {
+    this.cartService.addItem(itemId, this.idUser).subscribe({
+      next: (data: any) => {
+        if(data.status == 200){
+          console.log(data.cartLength);
+          this.countCartItems = data.cartLength;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   onLogout(){

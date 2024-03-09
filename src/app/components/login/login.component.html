@@ -6,9 +6,7 @@
      <mat-form-field>
           <mat-label>Enter your email</mat-label>
           <input matInput placeholder="Email" formControlName="email" type="email">
-          <button type="button" mat-icon-button matSuffix>
-            <mat-icon>email</mat-icon>
-          </button>
+          <mat-icon matSuffix>email</mat-icon>
      </mat-form-field>
 
      <div class="error" *ngIf="
@@ -62,17 +60,13 @@
 <div class="dark" *ngIf="formEmail"></div>
 
 <form [formGroup]="emailForm" *ngIf="formEmail" (ngSubmit)="sendEmail()" class="emailForm">
-     <button type="button" mat-icon-button (click)="closeForm()" class="btnClose">
-          <mat-icon class="close">close</mat-icon>
-     </button>
+     <mat-icon (click)="closeForm()" class="close">close</mat-icon>
      <h2>Enter your email</h2>
 
      <mat-form-field>
           <mat-label>Enter your email</mat-label>
           <input matInput placeholder="Email" (ngModelChange)="changeEmailStatus()" formControlName="email" type="email">
-          <button type="button" mat-icon-button matSuffix>
-            <mat-icon>email</mat-icon>
-          </button>
+          <mat-icon matSuffix>email</mat-icon>
      </mat-form-field>
 
      <div class="error" *ngIf="

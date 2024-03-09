@@ -40,9 +40,9 @@
                <div class="inputContainer">
                     <select #category>
                          <option value="Tutte le categorie" selected>Tutte le categorie</option>
-                         <option value="Automobili">Automobili</option>
-                         <option value="Elettronica">Elettronica</option>
-                         <option value="Sport">Sport</option>
+                         @for (category of categories; track category) {
+                              <option [value]="category.value">{{category.value}}</option>
+                         }
                     </select>
                     <input placeholder="Search..." #searchInput (input)="filterItems()">
                     <mat-icon (click)="searchItems()" class="iconSearch">search</mat-icon>
@@ -50,8 +50,8 @@
 
                <div class="searchList" [ngClass]="inputFocus ? 'searched' : '' ">
                     <ul class="listItems">
-                         <li *ngFor="let product of filteredItems" (click)="searchFilter(product.title)">
-                              {{product.title}}
+                         <li *ngFor="let product of filteredItems" (click)="searchFilter(product.name)">
+                              {{product.name}}
                          </li>
                     </ul>
                </div>
@@ -83,12 +83,15 @@
      <div class="container">
           <div *ngFor="let product of filteredProducts">
                <mat-card class="example-card">
+                    <!-- <img [src]="product.image"> -->
                     <mat-card-header>
-                      <mat-card-title>{{product.title}}</mat-card-title>
+                      <mat-card-title>{{product.name}}</mat-card-title>
                     </mat-card-header>
-                    <p>price: {{product.price}}$</p>
-                    <button (click)="addToCart(product)" mat-raised-button color="primary">Add</button>
-                    <button (click)="removeFromCart(product)" mat-raised-button color="primary">Remove</button>
+                    <p>Prezzo: {{product.price}}€</p>
+                    <button *ngIf="userName" (click)="addToCart(product._id)" mat-raised-button color="primary">Add</button>
+
+                    <button *ngIf="!userName" routerLink="/login" mat-raised-button color="primary">Add</button>
+                    <button *ngIf="!userName" routerLink="/login" mat-raised-button color="primary">Remove</button>
                </mat-card>
           </div>
      </div>

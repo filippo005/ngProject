@@ -1,34 +1,54 @@
+<div class="brand">
+     <span class="nameBrand" routerLink="/">E-Commerce</span>
+</div>
+
 <div class="container">
-     <div *ngFor="let item of items">
-          <mat-card class="card">
+     <div *ngIf="countItems > 0" class="totalPriceDiv">
+          <p>Totale Price: {{total}}€</p>
+
+          <hr>
+     </div>
+
+     <div *ngFor="let item of items; index as i">
+          <div class="card">
                <div class="cardContent">
-                    <div>
-                         <mat-card-header>
-                              <mat-card-title>{{item.title}}</mat-card-title>
-                         </mat-card-header>
-                         <p>price: {{item.price}}</p>
-                    </div>
-
-                    <div class="divQuantity">
-                         <span>Quantity: {{item.quantity}}</span>
-
-                         <div (click)="addQuantity(item)">
-                              <mat-icon>add</mat-icon>
+                    <div class="productInfo">
+                         <div class="divImage">
+                              <!-- <img [src]="item.image" alt=""> -->
                          </div>
 
-                         <div (click)="removeQuantity(item)">
-                              <mat-icon>remove</mat-icon>
+                         <div class="info">
+                              <div>{{item.name}}</div>
+                              <p>Prezzo: {{item.price}}€</p>
+                         </div>
+                    </div>
+
+                    <div class="divOptions">
+                         <div class="divQuantity">
+                              <span>Quantity: {{item.quantity}}</span>
+
+                              <div (click)="addQuantity(item)">
+                                   <mat-icon>add</mat-icon>
+                              </div>
+
+                              <div (click)="removeQuantity(item)">
+                                   <mat-icon>remove</mat-icon>
+                              </div>
+                         </div>
+
+                         <div>
+                              <button type="button" mat-raised-button color="blue" (click)="removeItem(item._id, idUser)">
+                                   Rimuovi
+                              </button>
                          </div>
                     </div>
                </div>
-          </mat-card>
+          </div>
+
+          <hr *ngIf="i < countItems - 1">
      </div>
 
-     <div *ngIf="countItems > 0">
-          <p>
-               Totale Price: {{total}}€
-          </p>
-
+     <div *ngIf="countItems > 0" class="payDiv">
           <button routerLink="/pay" mat-raised-button color="warn">Pay</button>
      </div>
 

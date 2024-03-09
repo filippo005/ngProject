@@ -1,10 +1,10 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import otp from 'otp-generator';
+import { ObjectId } from 'mongoose';
 
 let transporter = nodemailer.createTransport({
      service: 'gmail',
@@ -17,12 +17,7 @@ let transporter = nodemailer.createTransport({
 
 const router = express.Router();
 const userModel = require("../Schemas/userSchema");
-
-const DBURL = "mongodb+srv://filippo:filippoDB@cluster0.bnlkcki.mongodb.net/?retryWrites=true&w=majority";
-
-mongoose.connect(DBURL)
-.then(data => {console.log("Connected to the DB")})
-.catch(err => console.log(err));
+const cartModel = require("../Schemas/cartSchema");
 
 router.use(cookieParser());
 
@@ -40,15 +35,24 @@ router.post("/register", async (req, res) => {
                bcrypt.hash(password.toString(), 10, (err, hash) => {
                     if(err) throw err;
 
-                    const values = {
-                         name: name,
-                         email: email,
-                         password: hash,
-                         code: ""
-                    };
+                    let cartId: ObjectId;
 
-                    userModel.create(values)
-                    .then((user: any) => {})
+                    cartModel.create({items: []})
+                    .then((cart: any) => {
+                         cartId = cart._id;
+
+                         const values = {
+                              name: name,
+                              email: email,
+                              password: hash,
+                              code: "",
+                              cartId: cartId
+                         };
+
+                         userModel.create(values)
+                         .then()
+                         .catch((err: Error) => console.log(err));
+                    })
                     .catch((err: Error) => console.log(err));
 
                     res.json({status: 200});
@@ -181,7 +185,6 @@ router.post('/resetPassword', (req, res) => {
           }
      });
 });
-
 
 module.exports = router;
 

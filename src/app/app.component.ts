@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { CartService } from './services/cart.service';
 import { AuthService } from './auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ProductService } from './services/product.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
     CommonModule,
     RouterOutlet
   ],
-  providers: [CartService, AuthService, CookieService],
+  providers: [CartService, AuthService, CookieService, ProductService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

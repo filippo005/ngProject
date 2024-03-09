@@ -1,29 +1,33 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService{
-  items: any = [];
+  url = "http://localhost:8080/api/cart";
 
-  constructor(){}
+  constructor(private http: HttpClient){}
 
-  addItem(item: any){
-    const result = this.items.indexOf(item);
-    if(result == -1){
-      this.items = [...this.items, item];
+  addItem(idItem: string, id: string){
+    const data = {
+      idItem: idItem,
+      idUser: id
     }
+
+    return this.http.post(`${this.url}/addItem`, data);
   }
 
-  removeItem(item: any){
-    const result = this.items.indexOf(item);
-
-    if(result > -1){
-      this.items.splice(result, 1);
+  removeItem(idItem: string, idUser: string){
+    const data = {
+      idUser: idUser,
+      idItem: idItem
     }
+
+    return this.http.post(`${this.url}/removeItem`, data);
   }
 
-  getItems(){
-    return this.items;
+  getItems(idUser: string){
+    return this.http.get(`${this.url}/getItems/${idUser}`);
   }
 }

@@ -81,8 +81,11 @@ body{
      max-width: 200px;
 }
 .container{
-     display: grid; grid-template-columns: 100px 100px 100px; gap: 10px;
+     display: grid; grid-template-columns: auto auto auto; gap: 10px;
      z-index: 0;
+}
+.container img{
+     width: 100%;
 }
 .container mat-card{
      width: 100%; display: flex; align-items: center; justify-content: center;

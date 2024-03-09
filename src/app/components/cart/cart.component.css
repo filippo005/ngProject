@@ -1,8 +1,38 @@
+.brand{
+     text-align: center; padding: 12px;
+}
+.nameBrand{
+     cursor: pointer; font-size: 30px;
+}
+.container{
+     border-radius: 8px; width: 95%; margin: 0 auto; padding: 6px;
+     border: 1px solid black; display: flex; flex-direction: column;
+     margin-top: 10px;
+}
+.totalPriceDiv{
+     padding: 6px; font-size: 18px;
+}
+.totalPriceDiv p{
+     margin: 0;
+}
 .card{
-     display: flex;
+     padding: 6px;
 }
 .cardContent{
-     display: flex; align-items: center; justify-content: space-evenly;
+     display: flex; align-items: center; justify-content: space-around;
+     width: 100%;
+}
+.productInfo{
+     display: flex;
+}
+.info{
+     display: flex; flex-direction: column;
+}
+.cardContent img{
+     width: 100px; height: 100px;
+}
+.divOptions{
+     display: flex;
 }
 .divQuantity{
      display: flex; align-items: center; justify-content: center;
@@ -12,4 +42,7 @@
      align-items: center; display: flex; cursor: pointer;
      border-radius: 6px; border: none; background: rgba(0, 0, 0, 0.1);
      padding: 1px; margin: 0 5px; font-size: 20px;
+}
+.payDiv{
+     margin: 0 auto;
 }

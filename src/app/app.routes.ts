@@ -8,6 +8,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { notAuthGuard } from './auth/not-auth.guard';
 import { ControlOTPComponent } from './components/control-otp/control-otp.component';
+import { SellProductComponent } from './components/sell-product/sell-product.component';
 
 export const routes: Routes = [
      {path: '', component: HomeComponent},
@@ -16,5 +17,6 @@ export const routes: Routes = [
      {path: 'cart', component: CartComponent, canActivate: [authGuard]},
      {path: "profile", component: ProfileComponent, canActivate: [authGuard]},
      {path: 'resetPassword/:id', component: ResetPasswordComponent},
-     {path: 'controlOTP/:id', component: ControlOTPComponent}
+     {path: 'controlOTP/:id', component: ControlOTPComponent},
+     {path: "sellProduct", component: SellProductComponent}
 ];

@@ -6,9 +6,7 @@
      <mat-form-field>
           <mat-label>Enter your name</mat-label>
           <input matInput placeholder="Name" formControlName="name" type="text">
-          <button type="button" mat-icon-button matSuffix>
-            <mat-icon>person</mat-icon>
-          </button>
+          <mat-icon matSuffix>person</mat-icon>
      </mat-form-field>
 
      <div class="error" *ngIf="
@@ -27,9 +25,7 @@
      <mat-form-field>
           <mat-label>Enter your email</mat-label>
           <input matInput placeholder="Email" (ngModelChange)="changeEmailStatus()" formControlName="email" type="email">
-          <button type="button" mat-icon-button matSuffix>
-            <mat-icon>email</mat-icon>
-          </button>
+          <mat-icon matSuffix>email</mat-icon>
      </mat-form-field>
 
      <div class="error" *ngIf="
