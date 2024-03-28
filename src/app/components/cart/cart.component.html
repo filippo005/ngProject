@@ -27,17 +27,29 @@
                          <div class="divQuantity">
                               <span>Quantity: {{item.quantity}}</span>
 
-                              <div (click)="addQuantity(item)">
+                              <div *ngIf="item.quantity > 0" (click)="addQuantity(item)">
+                                   <mat-icon>add</mat-icon>
+                              </div>
+                              <div *ngIf="item.quantity == 0">
                                    <mat-icon>add</mat-icon>
                               </div>
 
-                              <div (click)="removeQuantity(item)">
+                              <div *ngIf="item.quantity > 0" (click)="removeQuantity(item)">
+                                   <mat-icon>remove</mat-icon>
+                              </div>
+                              <div *ngIf="item.quantity == 0">
                                    <mat-icon>remove</mat-icon>
                               </div>
                          </div>
 
-                         <div>
+                         <div *ngIf="item.quantity > 0">
                               <button type="button" mat-raised-button color="blue" (click)="removeItem(item._id, idUser)">
+                                   Rimuovi
+                              </button>
+                         </div>
+
+                         <div *ngIf="item.quantity == 0">
+                              <button type="button" mat-raised-button color="blue">
                                    Rimuovi
                               </button>
                          </div>

@@ -88,10 +88,26 @@
                       <mat-card-title>{{product.name}}</mat-card-title>
                     </mat-card-header>
                     <p>Prezzo: {{product.price}}€</p>
-                    <button *ngIf="userName" (click)="addToCart(product._id)" mat-raised-button color="primary">Add</button>
 
-                    <button *ngIf="!userName" routerLink="/login" mat-raised-button color="primary">Add</button>
-                    <button *ngIf="!userName" routerLink="/login" mat-raised-button color="primary">Remove</button>
+                    <div *ngIf="product.avgReviews % 1 == 0" class="stars">
+                         <span>{{product.avgReviews}},0</span>
+                         <div *ngFor="let n of [].constructor(product.avgReviews)">
+                              <mat-icon>star</mat-icon>
+                         </div>
+                         <a href="#reviews">{{product.reviews.length}}</a>
+                    </div>
+
+                    <div *ngIf="product.avgReviews % 1 != 0" class="stars">
+                         <span>{{product.avgReviews - 0.5}},5</span>
+                         <div *ngFor="let n of [].constructor(product.avgReviews + 0.5); let i = index">
+                              <mat-icon *ngIf="i < product.reviews.length - 2">star</mat-icon>
+                              <mat-icon *ngIf="i == product.reviews.length - 2">star_half</mat-icon>
+                         </div>
+                         <a href="#reviews">{{product.reviews.length}}</a>
+                    </div>
+
+                    <button *ngIf="userName" mat-raised-button routerLink="/productDetails/{{product._id}}">Info</button>
+                    <button *ngIf="!userName" mat-raised-button routerLink="/login">Info</button>
                </mat-card>
           </div>
      </div>

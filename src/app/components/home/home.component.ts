@@ -8,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
@@ -52,11 +52,13 @@ export class HomeComponent implements OnInit{
   sideNavOpen: boolean = false;
   inputFocus: boolean = false;
   loaded: boolean = false;
+  isReview: boolean = false;
 
   @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
   @ViewChild('category') category: ElementRef<HTMLSelectElement>;
 
   idUser: string;
+  idProduct: string;
   userName: string;
   viewDiv: string;
 
@@ -67,6 +69,8 @@ export class HomeComponent implements OnInit{
   categories: any;
 
   countCartItems: number = 0;
+
+  formReview: FormGroup;
 
   constructor(
     private authService: AuthService,
@@ -80,7 +84,7 @@ export class HomeComponent implements OnInit{
     this.productService.getProducts().subscribe({
       next: (data: any) => {
         if(data.status == 200){
-          this.beforeProducts = data.products;
+          this.products = data.products;
         }
         else{
           console.log("Non ci sono prodotti");
@@ -90,8 +94,7 @@ export class HomeComponent implements OnInit{
         console.log(err);
       },
       complete: () => {
-        this.products = this.beforeProducts;
-        this.filteredProducts = this.beforeProducts;
+        this.filteredProducts = this.products;
       }
     });
 
@@ -106,6 +109,18 @@ export class HomeComponent implements OnInit{
           },
           error: (err) => {
             console.log(err);
+          },
+          complete: () => {
+            this.cartService.getItems(this.idUser).subscribe({
+            next: (data: any) => {
+              if(data.status == 200){
+                this.countCartItems = data.items.length;
+              }
+            },
+            error: (err) => {
+              console.log(err);
+            }
+          })
           }
         });
       }
@@ -118,6 +133,7 @@ export class HomeComponent implements OnInit{
       if(a.value > b.value) return 1;
       return 0;
     });
+
     this.categories = categoriesList.categories;
   }
 
@@ -168,20 +184,6 @@ export class HomeComponent implements OnInit{
     });
     this.searchInput.nativeElement.value = "";
     this.inputFocus = false;
-  }
-
-  addToCart(itemId: string): void {
-    this.cartService.addItem(itemId, this.idUser).subscribe({
-      next: (data: any) => {
-        if(data.status == 200){
-          console.log(data.cartLength);
-          this.countCartItems = data.cartLength;
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
   }
 
   onLogout(){

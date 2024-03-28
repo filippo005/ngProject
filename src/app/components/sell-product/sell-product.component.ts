@@ -54,13 +54,11 @@ export class SellProductComponent implements OnInit{
 
   onSubmit(){
     if(this.form.valid){
-      const data = {
-        name: this.form.value.name.trim(),
-        price: this.form.value.price.trim(),
-        category: this.form.value.category
-      };
-
-      this.productService.registerProduct(data).subscribe({
+      this.productService.registerProduct(
+        this.form.value.name.trim(),
+        this.form.value.price.trim(),
+        this.form.value.category
+      ).subscribe({
         next: (data: any) => {
           console.log(data);
         },

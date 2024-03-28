@@ -46,11 +46,14 @@ router.post("/register", async (req, res) => {
                               email: email,
                               password: hash,
                               code: "",
-                              cartId: cartId
+                              cartId: cartId,
+                              avgReviews: 0
                          };
 
                          userModel.create(values)
-                         .then()
+                         .then((user: any) => {
+                              user.reviews = [];
+                         })
                          .catch((err: Error) => console.log(err));
                     })
                     .catch((err: Error) => console.log(err));

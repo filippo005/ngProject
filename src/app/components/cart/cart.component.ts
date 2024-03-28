@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 
 import {MatCardModule} from '@angular/material/card';
@@ -37,12 +37,6 @@ export class CartComponent implements OnInit{
   total: number = 0;
   countItems: number;
 
-  elements: any;
-  stripe: any;
-
-  stripeKey: string = `
-  pk_test_51N9B2OILKoaPpOnPk0OdKfLtZK0a1JukFP9dSkar8jbvJVbdpDj7WTw3SQZAD2atWGZOK9ZIAzdSnoWIhJLJcy7400fhojUcSC`;
-
   constructor(private cartService: CartService, private cookieService: CookieService){}
 
   ngOnInit(): void {
@@ -75,7 +69,7 @@ export class CartComponent implements OnInit{
     this.totalPrice();
 
     if(item.quantity == 0){
-      this.removeItem(item, this.idUser);
+      this.removeItem(item._id, this.idUser);
     }
   }
 

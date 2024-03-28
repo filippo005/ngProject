@@ -30,4 +30,13 @@ export class CartService{
   getItems(idUser: string){
     return this.http.get(`${this.url}/getItems/${idUser}`);
   }
+
+  // pay(price: number, idPayment: any){
+  //   const data = {
+  //     price: price,
+  //     idPayment: idPayment
+  //   }
+
+  //   return this.http.post(`${this.url}/pay`, data);
+  // }
 }

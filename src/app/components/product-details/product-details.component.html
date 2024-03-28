@@ -1,0 +1,41 @@
+<div *ngIf="product">
+     <p>{{product.name}}</p>
+     <p>{{product.price}}</p>
+
+     <button (click)="addToCart()" mat-raised-button color="primary">Add</button>
+     <button (click)="removeItem()" mat-raised-button color="primary">Remove</button>
+     <button (click)="isReview = true" mat-raised-button color="primary">Review</button>
+</div>
+
+<div *ngIf="isReview">
+     <form [formGroup]="formReview" (ngSubmit)="submitReview()">
+          <h2>Add Review</h2>
+
+          <mat-form-field>
+               <mat-label>Enter the mark</mat-label>
+               <input matInput placeholder="Mark" formControlName="mark" type="text">
+               <mat-icon matSuffix>pin</mat-icon>
+          </mat-form-field>
+
+          <div class="error" *ngIf="formReview.controls['mark'].getError('required')">
+               Mark is required
+          </div>
+
+          <div *ngIf="formReview.controls['mark'].touched &&
+               !formReview.controls['mark'].getError('required') &&
+               formReview.controls['mark'].errors">
+               Mark must be between 1 and 5
+          </div>
+
+          <mat-form-field>
+               <mat-label>Leave a comment</mat-label>
+               <textarea matInput placeholder="Description" formControlName="description"></textarea>
+          </mat-form-field>
+
+          <div *ngIf="formReview.controls['description'].getError('required')">
+               Description is required
+          </div>
+
+          <button mat-raised-button type="submit" color="primary" [disabled]="!formReview.valid">Add</button>
+     </form>
+</div>
