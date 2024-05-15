@@ -14,6 +14,10 @@ let transporter = nodemailer.createTransport({
      }
 });
 
+const accountSid = 'ACff583b68cd89fab6979d5787e005f7a4';
+const authToken = '666f168d4c043c8937e890a62dc17fb1';
+const client = require('twilio')(accountSid, authToken);
+
 
 const router = express.Router();
 const userModel = require("../Schemas/userSchema");
@@ -187,6 +191,22 @@ router.post('/resetPassword', (req, res) => {
                res.json({status: 200});
           }
      });
+});
+
+router.post('/verifyPhoneNumber', (req, res) => {
+     const prefix = req.body.prefix;
+     const number = req.body.phoneNumber;
+     const phoneNumber = `${prefix}${number}`;
+     const OTP = otp.generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false, digits: true});
+
+     client.messages
+    .create({
+        body: `Inserisci questo codice OTP per verificare il tuo numero di telefono: ${OTP}`,
+        from: '+12176263523',
+        to: `${phoneNumber}`
+    })
+    .then((message: any) => console.log(message))
+    .done();
 });
 
 module.exports = router;

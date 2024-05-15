@@ -71,4 +71,13 @@ export class AuthService {
 
     return this.http.post(`${this.url}/controlOTP`, values);
   }
+
+  verifyPhoneNumber(){
+    const data = {
+      prefix: "+39",
+      phoneNumber: "3917705332"
+    };
+
+    return this.http.post(`${this.url}/verifyPhoneNumber`, data);
+  }
 }

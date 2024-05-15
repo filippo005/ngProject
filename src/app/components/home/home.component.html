@@ -1,5 +1,7 @@
 <mat-spinner class="spinner" *ngIf="!loaded" color="warn" diameter="65"></mat-spinner>
 
+<button (click)="verifyNumber()">phone number verification</button>
+
 <div *ngIf="loaded">
      <mat-sidenav-container class="sideNav" *ngIf="sideNavOpen">
           <mat-sidenav class="sideNavContent" mode="side" opened>

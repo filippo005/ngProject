@@ -20,8 +20,9 @@
     "nodemailer": "^6.9.9",
     "nodemon": "^3.0.2",
     "otp-generator": "^4.0.1",
-    "stripe": "^14.20.0",
+    "stripe": "^14.25.0",
     "ts-node": "^10.9.2",
+    "twilio": "^5.0.4",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

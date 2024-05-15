@@ -61,10 +61,12 @@ export class ProfileComponent implements OnInit{
           },
           error: (err) => {
             console.log(err);
+          },
+          complete: () => {
+            this.loaded = true;
           }
         });
       }
-      this.loaded = true;
     }, 1000);
 
     this.nameForm = new FormGroup({

@@ -31,12 +31,20 @@ export class CartService{
     return this.http.get(`${this.url}/getItems/${idUser}`);
   }
 
-  // pay(price: number, idPayment: any){
-  //   const data = {
-  //     price: price,
-  //     idPayment: idPayment
-  //   }
+  pay(items: any, idUser: string){
+    const data = {
+      items: items,
+      idUser: idUser
+    }
 
-  //   return this.http.post(`${this.url}/pay`, data);
-  // }
+    return this.http.post(`${this.url}/pay`, data);
+  }
+
+  emptyCart(idUser: string){
+    const data = {
+      idUser: idUser
+    }
+
+    return this.http.post(`${this.url}/emptyCart`, data);
+  }
 }

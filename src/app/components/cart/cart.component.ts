@@ -6,7 +6,8 @@ import {MatCardModule} from '@angular/material/card';
 import { HomeComponent } from '../home/home.component';
 
 import {MatButtonModule} from '@angular/material/button';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
@@ -23,7 +24,8 @@ import { jwtDecode } from 'jwt-decode';
     MatButtonModule,
     RouterLink,
     RouterOutlet,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
@@ -37,7 +39,12 @@ export class CartComponent implements OnInit{
   total: number = 0;
   countItems: number;
 
-  constructor(private cartService: CartService, private cookieService: CookieService){}
+  linkPayment: string;
+
+  isPay: boolean = false;
+  loaded: boolean = false;
+
+  constructor(private cartService: CartService, private cookieService: CookieService, private router: Router){}
 
   ngOnInit(): void {
     const token = this.cookieService.get('_ssU');
@@ -60,6 +67,9 @@ export class CartComponent implements OnInit{
       },
       error: (err) => {
         console.log(err);
+      },
+      complete: () => {
+        this.loaded = true;
       }
     });
   }
@@ -98,5 +108,25 @@ export class CartComponent implements OnInit{
     });
 
     return this.total.toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+  }
+
+  pay(){
+    this.cartService.pay(this.items, this.idUser).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        if(data.status == 200){
+          this.isPay = true;
+          this.linkPayment = data.url;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        if(this.isPay){
+          window.location.href = this.linkPayment;
+        }
+      }
+    })
   }
 }

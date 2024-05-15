@@ -10,6 +10,8 @@ import { notAuthGuard } from './auth/not-auth.guard';
 import { ControlOTPComponent } from './components/control-otp/control-otp.component';
 import { SellProductComponent } from './components/sell-product/sell-product.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { SuccessPaymentComponent } from './components/success-payment/success-payment.component';
 
 export const routes: Routes = [
      {path: '', component: HomeComponent},
@@ -20,5 +22,7 @@ export const routes: Routes = [
      {path: 'resetPassword/:id', component: ResetPasswordComponent},
      {path: 'controlOTP/:id', component: ControlOTPComponent},
      {path: 'productDetails/:id', component: ProductDetailsComponent},
-     {path: "sellProduct", component: SellProductComponent}
+     {path: "sellProduct", component: SellProductComponent},
+     {path: 'pay/:total', component: PaymentComponent},
+     {path: 'successPayment/:idUser', component: SuccessPaymentComponent}
 ];

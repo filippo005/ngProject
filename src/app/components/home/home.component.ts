@@ -190,4 +190,15 @@ export class HomeComponent implements OnInit{
     this.cookieService.delete('_ssU');
     this.router.navigate(['/login']);
   }
+
+  verifyNumber(){
+    this.authService.verifyPhoneNumber().subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
 }

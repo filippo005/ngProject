@@ -1,6 +1,6 @@
 <mat-spinner class="spinner" *ngIf="!loaded" color="warn" diameter="65"></mat-spinner>
 
-<span class="nameBrand" routerLink="/">E-Commerce</span>
+<span class="nameBrand" routerLink="/" *ngIf="loaded">E-Commerce</span>
 
 <div *ngIf="loaded" class="container">
      <h1 class="titleAccount">Account</h1>
