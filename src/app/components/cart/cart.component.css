@@ -2,7 +2,7 @@
      text-align: center; padding: 12px;
 }
 .nameBrand{
-     cursor: pointer; font-size: 30px;
+     cursor: pointer; font-size: 30px; color: #f44336;
 }
 .container{
      border-radius: 8px; width: 95%; margin: 0 auto; padding: 6px;

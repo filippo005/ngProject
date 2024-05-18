@@ -1,0 +1,30 @@
+<span class="nameBrand" routerLink="">BSE</span>
+
+<mat-icon class="arrow_back" routerLink="/profile">arrow_back</mat-icon>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+     <h2>Update Phone Number</h2>
+
+     <mat-form-field>
+          <mat-label>Enter your phone number</mat-label>
+          <input matInput placeholder="Phone number" formControlName="phoneNumber" type="text" maxlength="10">
+          <mat-icon matSuffix>call</mat-icon>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          form.controls['phoneNumber'].touched &&
+          form.controls['phoneNumber'].getError('required')">
+          Phone number is required
+     </div>
+
+     <div class="error" *ngIf="
+          form.controls['phoneNumber'].touched &&
+          !form.controls['phoneNumber'].getError('required') &&
+          form.controls['phoneNumber'].errors">
+          Phone number is not valid
+     </div>
+
+     <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Update</button>
+</form>
+
+<router-outlet></router-outlet>

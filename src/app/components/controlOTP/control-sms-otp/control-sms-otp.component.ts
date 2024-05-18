@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -10,7 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 
 @Component({
-  selector: 'app-control-otp',
+  selector: 'app-control-sms-otp',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,30 +22,30 @@ import {MatInputModule} from '@angular/material/input';
     RouterOutlet,
     RouterLink
   ],
-  templateUrl: './control-otp.component.html',
-  styleUrl: './control-otp.component.css'
+  templateUrl: './control-sms-otp.component.html',
+  styleUrl: './control-sms-otp.component.css'
 })
-export class ControlOTPComponent implements OnInit{
+export class ControlSmsOtpComponent implements OnInit{
   form: FormGroup;
-
-  rigthOTP: boolean;
 
   userId: string;
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute){}
+  rigthOTP: boolean = false;
+
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router){}
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      otp: new FormControl(null, [Validators.required, Validators.minLength(8)])
-    });
+      this.form = new FormGroup({
+        otp: new FormControl(null, [Validators.required,Validators.minLength(6)])
+      });
 
-    this.route.paramMap.subscribe(param => {
-      this.userId = param.get("id");
-    });
+      this.route.paramMap.subscribe(param => {
+        this.userId = param.get("id");
+      });
   }
 
   onSubmit(){
-    this.authService.controlOTP(this.userId, this.form.value.otp).subscribe({
+    this.authService.verifySmsOTP(this.userId, this.form.value.otp).subscribe({
       next: (data: any) => {
         if(data.status == 400){
           this.form.reset();
@@ -61,10 +61,11 @@ export class ControlOTPComponent implements OnInit{
       complete: () => {
         if(this.rigthOTP){
           setTimeout(() => {
-            this.router.navigate([`/resetPassword/${this.userId}`]);
+            this.router.navigate(['/profile']);
           }, 1000);
         }
       }
     });
   }
+
 }

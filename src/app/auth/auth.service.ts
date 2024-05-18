@@ -40,29 +40,6 @@ export class AuthService {
     return this.http.post(`${this.url}/sendEmail`, values)
   }
 
-  updatePassword(id: string, password: string){
-    const values = {
-      id: id,
-      password: password
-    }
-
-    return this.http.post(`${this.url}/resetPassword`, values);
-  }
-
-  updateData(id: string, data: string, typeData: number){
-    const values = {
-      id: id,
-      data: data
-    }
-
-    if(typeData == 0){
-      return this.http.post(`${this.url}/updateName`, values);
-    }
-    else{
-      return this.http.post(`${this.url}/updateEmail`, values);
-    }
-  }
-
   controlOTP(id: string, otp: number){
     const values = {
       id: id,
@@ -72,12 +49,12 @@ export class AuthService {
     return this.http.post(`${this.url}/controlOTP`, values);
   }
 
-  verifyPhoneNumber(){
+  verifySmsOTP(idUser: string, code: string){
     const data = {
-      prefix: "+39",
-      phoneNumber: "3917705332"
+      idUser: idUser,
+      code: code
     };
 
-    return this.http.post(`${this.url}/verifyPhoneNumber`, data);
+    return this.http.post(`${this.url}/verifySmsOTP`, data);
   }
 }

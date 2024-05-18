@@ -28,7 +28,7 @@ input.example-right-align::-webkit-inner-spin-button {
 }
 .nameBrand{
      cursor: pointer; position: absolute; top: 8%; left: 50%;
-     transform: translate(-50%, -8%); font-size: 30px;
+     transform: translate(-50%, -8%); font-size: 30px; color: #f44336;
 }
 .psw{
      color: rgba(0, 0, 0, 0.5); margin: 0 auto;

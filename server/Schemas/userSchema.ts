@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
      name: String,
      email: String,
      password: String,
+     phoneNumber: String,
+     smsOTP: String,
      code: String,
      cartId: {type: mongoose.Schema.Types.ObjectId, ref: 'carts'},
      reviews: [reviewSchema],

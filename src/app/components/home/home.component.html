@@ -1,7 +1,5 @@
 <mat-spinner class="spinner" *ngIf="!loaded" color="warn" diameter="65"></mat-spinner>
 
-<button (click)="verifyNumber()">phone number verification</button>
-
 <div *ngIf="loaded">
      <mat-sidenav-container class="sideNav" *ngIf="sideNavOpen">
           <mat-sidenav class="sideNavContent" mode="side" opened>
@@ -36,7 +34,7 @@
      <div class="dark" *ngIf="sideNavOpen || inputFocus" [ngClass]="inputFocus ? 'inputFocus' : 'side' "></div>
 
      <mat-toolbar class="toolbar">
-          <span class="nameBrand" routerLink="/">E-Commerce</span>
+          <span class="nameBrand" routerLink="/">BSE</span>
 
           <form class="inputSearch" id="form">
                <div class="inputContainer">

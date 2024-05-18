@@ -1,0 +1,36 @@
+<span class="nameBrand" routerLink="">BSE</span>
+
+<mat-icon class="arrow_back" routerLink="/profile">arrow_back</mat-icon>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+     <h2>Update Email</h2>
+
+     <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input matInput placeholder="Email" (ngModelChange)="changeEmailStatus()" formControlName="email" type="email">
+          <mat-icon matSuffix>email</mat-icon>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          form.controls['email'].touched &&
+          form.controls['email'].getError('required')">
+          Email is required
+     </div>
+
+     <div class="error" *ngIf="
+          form.controls['email'].touched &&
+          !form.controls['email'].getError('required') &&
+          form.controls['email'].errors">
+          Email not valid
+     </div>
+
+     <div class="error" *ngIf="
+          EMAIL_EXISTS &&
+          !form.controls['email'].touched">
+          Email is just used
+     </div>
+
+     <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Update</button>
+</form>
+
+<router-outlet></router-outlet>

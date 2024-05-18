@@ -15,7 +15,7 @@ let transporter = nodemailer.createTransport({
 });
 
 const accountSid = 'ACff583b68cd89fab6979d5787e005f7a4';
-const authToken = '666f168d4c043c8937e890a62dc17fb1';
+const authToken = '93af14466ff0b349e4ba87afb0da5f34';
 const client = require('twilio')(accountSid, authToken);
 
 
@@ -29,6 +29,7 @@ router.post("/register", async (req, res) => {
      const name = req.body.name;
      const email = req.body.email;
      const password = req.body.password;
+     const phoneNumber = req.body.phoneNumber;
 
      await userModel.findOne({email: email})
      .then((user: any) => {
@@ -49,6 +50,8 @@ router.post("/register", async (req, res) => {
                               name: name,
                               email: email,
                               password: hash,
+                              phoneNumber: "",
+                              smsOTP: "",
                               code: "",
                               cartId: cartId,
                               avgReviews: 0
@@ -93,24 +96,60 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/updateName", async (req, res) => {
-     const filter = {_id: req.body.id};
+     const filter = {_id: req.body.idUser};
 
-     const result = await userModel.updateOne(filter, {$set: {name: req.body.data}});
+     const result = await userModel.updateOne(filter, {$set: {name: req.body.name}});
 
      if(result){
-          res.json({status: res.statusCode});
+          res.json({status: 200});
+     }
+     else{
+          res.json({status: 400});
      }
 });
 
 router.post("/updateEmail", async (req, res) => {
      const user = await userModel.findOne({email: req.body.data});
-     if(!user){
-          const filter = {_id: req.body.id};
 
-          const result = await userModel.updateOne(filter, {$set: {email: req.body.data}});
+     if(!user){
+          const filter = {_id: req.body.idUser};
+
+          const result = await userModel.updateOne(filter, {$set: {email: req.body.email}});
 
           if(result.modifiedCount == 1){
-               res.json({status: 200, message: "Email aggiornata"});
+               res.json({status: 200});
+          }
+     }
+     else{
+          res.json({status: 400});
+     }
+});
+
+router.post('/updatePhoneNumber', async (req, res) => {
+     const prefix = req.body.prefix;
+     const number = req.body.phoneNumber;
+     const idUser = req.body.idUser;
+     const phoneNumber = `${prefix}${number}`;
+     const OTP = otp.generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false, digits: true});
+     const filter = {_id: idUser};
+
+     const result = await userModel.updateOne(filter, {$set: {phoneNumber: phoneNumber}});
+
+     if(result){
+          const insertCode = await userModel.updateOne(filter, {$set: {smsOTP: OTP}});
+          if(insertCode){
+               client.messages
+               .create({
+                    body: `Inserisci questo codice OTP per verificare il tuo numero di telefono: ${OTP}`,
+                    from: '+12176263523',
+                    to: `${phoneNumber}`
+               })
+               .then(() => {
+                    res.json({status: 200});
+               })
+               .catch((error: any) => {
+                    res.json({status: 400});
+               });
           }
      }
      else{
@@ -121,8 +160,8 @@ router.post("/updateEmail", async (req, res) => {
 router.get("/data/:id", async (req, res) => {
      await userModel.findOne({_id: req.params.id})
      .then((user: any) => {
-          res.json({name: user.name, email: user.email});
-     })
+          res.json({name: user.name, email: user.email, phoneNumber: user.phoneNumber});
+     });
 });
 
 router.post("/sendEmail", async (req, res) => {
@@ -193,20 +232,20 @@ router.post('/resetPassword', (req, res) => {
      });
 });
 
-router.post('/verifyPhoneNumber', (req, res) => {
-     const prefix = req.body.prefix;
-     const number = req.body.phoneNumber;
-     const phoneNumber = `${prefix}${number}`;
-     const OTP = otp.generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false, digits: true});
+router.post('/verifySmsOTP', async (req, res) => {
+     const code = req.body.code;
+     const idUser = req.body.idUser;
 
-     client.messages
-    .create({
-        body: `Inserisci questo codice OTP per verificare il tuo numero di telefono: ${OTP}`,
-        from: '+12176263523',
-        to: `${phoneNumber}`
-    })
-    .then((message: any) => console.log(message))
-    .done();
+     const user = await userModel.findOne({_id: idUser});
+
+     if(user){
+          if(user.smsOTP == code){
+               res.json({status: 200});
+          }
+          else{
+               res.json({status: 400});
+          }
+     }
 });
 
 module.exports = router;

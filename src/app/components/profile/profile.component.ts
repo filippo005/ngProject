@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,7 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -31,20 +31,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class ProfileComponent implements OnInit{
   loaded: boolean = false;
-  formName: boolean = false;
-  formEmail: boolean = false;
-  EMAIL_EXISTS: boolean;
-  errors: boolean;
 
   idUser: string;
   userName: string;
   emailUser: string;
-
-  nameForm: FormGroup;
-  emailForm: FormGroup;
-
-  data: string;
-  cod: number;
+  phoneNumber: string;
 
   constructor(private authService: AuthService, private cookieService: CookieService, private router: Router){}
 
@@ -58,6 +49,7 @@ export class ProfileComponent implements OnInit{
           next: (data: any) => {
             this.userName = data.name;
             this.emailUser = data.email;
+            this.phoneNumber = data.phoneNumber;
           },
           error: (err) => {
             console.log(err);
@@ -68,64 +60,5 @@ export class ProfileComponent implements OnInit{
         });
       }
     }, 1000);
-
-    this.nameForm = new FormGroup({
-      name: new FormControl(null, Validators.required)
-    });
-
-    this.emailForm = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email])
-    });
-  }
-
-  updateName(){
-    this.formName = true;
-  }
-
-  updateEmail(){
-    this.formEmail = true;
-  }
-
-  closeForms(){
-    this.formEmail = false;
-    this.formName = false;
-  }
-
-  changeEmailStatus(){
-    this.EMAIL_EXISTS = false;
-  }
-
-  onSubmit(){
-    if(this.formName){
-      this.data = this.nameForm.value.name.trim();
-      this.cod = 0;
-    }
-    else{
-      this.data = this.emailForm.value.email.trim();
-      this.cod = 1;
-    }
-
-    this.authService.updateData(this.idUser, this.data, this.cod).subscribe({
-      next: (data: any) => {
-        if(data.status == 200){
-          this.EMAIL_EXISTS = false;
-          this.errors = false;
-        }
-        else{
-          this.nameForm.reset();
-          this.emailForm.reset();
-          this.EMAIL_EXISTS = true;
-          this.errors = false;
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        if(this.EMAIL_EXISTS == false && this.errors == false){
-          window.location.reload();
-        }
-      }
-    })
   }
 }

@@ -1,0 +1,17 @@
+form{
+     position: absolute; top: 50%; left: 50%;
+     transform: translate(-50%, -50%); padding: 20px; border: 0.625px solid rgba(0, 0, 0, 0.2);
+     display: flex; flex-direction: column; border-radius: 6px;
+     width: 360px; background: white; z-index: 20;
+}
+.nameBrand{
+     cursor: pointer; position: absolute; top: 8%; left: 50%;
+     transform: translate(-50%, -8%); font-size: 30px; color: #f44336;
+}
+.arrow_back{
+     width: 40px; height: 40px; font-size: 40px; transition: 0.2s linear; cursor: pointer;
+     position: absolute; top: 5%; left: 2%; transform: translate(-2%, -5%);
+}
+.arrow_back:hover{
+     color: #f44336;
+}

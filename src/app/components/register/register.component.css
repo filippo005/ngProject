@@ -32,3 +32,22 @@ input.example-right-align::-webkit-inner-spin-button {
      cursor: pointer; position: absolute; top: 4%; left: 50%;
      transform: translate(-50%, -4%); font-size: 30px;
 }
+.btnClose:hover .close{
+     color: rgb(246, 146, 146);
+}
+.btnClose{
+     position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+}
+.close{
+     color: white; transition: 0.2s linear;
+}
+.phoneForm{
+     position: absolute; top: 50%; left: 50%;
+     transform: translate(-50%, -50%); padding: 20px; border: 0.625px solid rgba(0, 0, 0, 0.2);
+     display: flex; flex-direction: column; border-radius: 6px;
+     width: 360px; background: white; z-index: 20;
+}
+.dark{
+     position: absolute; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);
+     top: 0; z-index: 10;
+}

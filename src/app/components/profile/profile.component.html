@@ -1,6 +1,6 @@
 <mat-spinner class="spinner" *ngIf="!loaded" color="warn" diameter="65"></mat-spinner>
 
-<span class="nameBrand" routerLink="/" *ngIf="loaded">E-Commerce</span>
+<span class="nameBrand" routerLink="/" *ngIf="loaded">BSE</span>
 
 <div *ngIf="loaded" class="container">
      <h1 class="titleAccount">Account</h1>
@@ -12,7 +12,7 @@
                <b>Name:</b>
                <span>{{userName}}</span>
           </div>
-          <button mat-raised-button color="warn" (click)="updateName()">Modifica</button>
+          <button mat-raised-button color="warn" [routerLink]="['/updateName', idUser]">Modifica</button>
      </div>
 
      <hr>
@@ -22,74 +22,18 @@
                <b>Email:</b>
                <span>{{emailUser}}</span>
           </div>
-          <button mat-raised-button color="warn" (click)="updateEmail()">Modifica</button>
+          <button mat-raised-button color="warn" [routerLink]="['/updateEmail', idUser]">Modifica</button>
+     </div>
+
+     <hr>
+
+     <div class="divData">
+          <div class="data">
+               <b>Numero di telefono:</b>
+               <span>{{phoneNumber}}</span>
+          </div>
+
+          <button *ngIf="phoneNumber === '' " mat-raised-button color="warn" [routerLink]="['/updatePhoneNumber', idUser]">Aggiungi</button>
+          <button *ngIf="phoneNumber !== '' " mat-raised-button color="warn" [routerLink]="['/updatePhoneNumber', idUser]">Modifica</button>
      </div>
 </div>
-
-<div class="dark" *ngIf="formName || formEmail"></div>
-
-<form [formGroup]="nameForm" *ngIf="formName" (ngSubmit)="onSubmit()">
-     <button type="button" mat-icon-button (click)="closeForms()" class="btnClose">
-          <mat-icon class="close">close</mat-icon>
-     </button>
-     <h2>Update Name</h2>
-
-     <mat-form-field>
-          <mat-label>Enter your name</mat-label>
-          <input matInput placeholder="Name" formControlName="name" type="text">
-          <button type="button" mat-icon-button matSuffix>
-            <mat-icon>person</mat-icon>
-          </button>
-     </mat-form-field>
-
-     <div class="error" *ngIf="
-          nameForm.controls['name'].touched &&
-          nameForm.controls['name'].getError('required')">
-          Name is required
-     </div>
-
-     <div class="error" *ngIf="
-          nameForm.controls['name'].touched &&
-          !nameForm.controls['name'].getError('required') &&
-          nameForm.controls['name'].errors">
-          Name is required
-     </div>
-
-     <button mat-raised-button type="submit" color="primary" [disabled]="!nameForm.valid">Update</button>
-</form>
-
-<form [formGroup]="emailForm" *ngIf="formEmail" (ngSubmit)="onSubmit()">
-     <button type="button" mat-icon-button (click)="closeForms()" class="btnClose">
-          <mat-icon class="close">close</mat-icon>
-     </button>
-     <h2>Update Email</h2>
-
-     <mat-form-field>
-          <mat-label>Enter your email</mat-label>
-          <input matInput placeholder="Email" (ngModelChange)="changeEmailStatus()" formControlName="email" type="email">
-          <button type="button" mat-icon-button matSuffix>
-            <mat-icon>email</mat-icon>
-          </button>
-     </mat-form-field>
-
-     <div class="error" *ngIf="
-          emailForm.controls['email'].touched &&
-          emailForm.controls['email'].getError('required')">
-          Email is required
-     </div>
-
-     <div class="error" *ngIf="
-          emailForm.controls['email'].touched &&
-          !emailForm.controls['email'].getError('required') &&
-          emailForm.controls['email'].errors">
-          Email not valid
-     </div>
-
-     <div class="error" *ngIf="
-          EMAIL_EXISTS &&
-          !emailForm.controls['email'].touched">
-          Email is just used
-     </div>
-
-     <button mat-raised-button type="submit" color="primary" [disabled]="!emailForm.valid">Update</button>
-</form>
