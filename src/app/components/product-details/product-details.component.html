@@ -1,9 +1,9 @@
 <div *ngIf="product">
      <p>{{product.name}}</p>
-     <p>{{product.price}}</p>
+     <p>Prezzo: {{product.price}}€</p>
 
-     <button (click)="addToCart()" mat-raised-button color="primary">Add</button>
-     <button (click)="removeItem()" mat-raised-button color="primary">Remove</button>
+     <button (click)="addToCart()" mat-raised-button color="primary">Aggiungi al carrello</button>
+     <button (click)="removeItem()" mat-raised-button color="primary">Rimuovi dal carrello</button>
      <button (click)="isReview = true" mat-raised-button color="primary">Review</button>
 </div>
 
