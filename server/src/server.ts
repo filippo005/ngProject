@@ -10,7 +10,7 @@ const productRouter = require("../routes/product-routes");
 const cartRouter = require("../routes/cart-routes");
 
 app.use(cors({
-     origin: ["http://localhost:4200"],
+     origin: ["https://ng-project.vercel.app"],
      methods: ["GET", "POST"],
      credentials: true
 }));
