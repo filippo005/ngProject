@@ -5,8 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UpdateDataService {
-
-  url = "https://ng-project.vercel.app/api";
+  url = "http://localhost:8080/api";
 
   constructor(private http: HttpClient){}
 

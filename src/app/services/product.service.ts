@@ -5,18 +5,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ProductService {
-  url = "https://ng-project.vercel.app/api";
+  url = "http://localhost:8080/api";
 
   constructor(private http: HttpClient){}
 
-  registerProduct(name: string, price: number, category: any){
-    const data = {
-      name: name,
-      price: price,
-      category: category
-    }
+  registerProduct(name: string, price: string, category: any, file: File){
+    //se ho un file, devo usare un FormData
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('category', category);
+    formData.append('file', file);
 
-    return this.http.post(`${this.url}/registerProduct`, data);
+    return this.http.post(`${this.url}/registerProduct`, formData);
   }
 
   getProducts(){

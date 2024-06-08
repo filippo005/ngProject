@@ -1,0 +1,60 @@
+<span class="nameBrand" routerLink="">BSE</span>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+     <h2>Create Item</h2>
+
+     <mat-form-field>
+          <mat-label>Enter name</mat-label>
+          <input matInput placeholder="Name" formControlName="name" type="text">
+          <mat-icon matSuffix>article</mat-icon>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          form.controls['name'].touched &&
+          form.controls['name'].getError('required')">
+          Name is required
+     </div>
+
+     <mat-form-field>
+          <mat-label>Enter the price</mat-label>
+          <input class="priceInput" matInput placeholder="Price" formControlName="price" type="text" maxlength="4">
+          <mat-icon matSuffix>payments</mat-icon>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          form.controls['price'].touched &&
+          form.controls['price'].getError('required')">
+          Price is required
+     </div>
+
+     <div class="error" *ngIf="
+          form.controls['price'].dirty &&
+          !form.controls['price'].getError('required') &&
+          form.controls['price'].getError('pattern')">
+          Price must has only numbers
+     </div>
+
+     <mat-form-field>
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category">
+          @for (category of categories; track category) {
+               <mat-option [value]="category.value">{{category.value}}</mat-option>
+          }
+          </mat-select>
+     </mat-form-field>
+
+     <div class="error" *ngIf="
+          form.controls['category'].touched &&
+          form.controls['category'].getError('required')">
+          Category is required
+     </div>
+
+     <div>
+          <label for="photo">Choose a photo for your item</label>
+          <input name="photo" type="file" (change)="onChangeFile($event)">
+     </div>
+
+     <button #btn mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Send</button>
+</form>
+
+<router-outlet></router-outlet>

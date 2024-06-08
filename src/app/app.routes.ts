@@ -8,7 +8,6 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { notAuthGuard } from './auth/not-auth.guard';
 import { ControlOTPComponent } from './components/controlOTP/control-otp/control-otp.component';
-import { SellProductComponent } from './components/sell-product/sell-product.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { SuccessPaymentComponent } from './components/success-payment/success-payment.component';
@@ -16,6 +15,7 @@ import { UpdateNameComponent } from './components/update/update-name/update-name
 import { UpdateEmailComponent } from './components/update/update-email/update-email.component';
 import { UpdatePhoneNumberComponent } from './components/update/update-phone-number/update-phone-number.component';
 import { ControlSmsOtpComponent } from './components/controlOTP/control-sms-otp/control-sms-otp.component';
+import { CreateItemComponent } from './components/create-item/create-item.component';
 
 export const routes: Routes = [
      {path: '', component: HomeComponent},
@@ -27,10 +27,10 @@ export const routes: Routes = [
      {path: 'controlOTP/:id', component: ControlOTPComponent},
      {path: 'controlSmsOTP/:id', component: ControlSmsOtpComponent},
      {path: 'productDetails/:id', component: ProductDetailsComponent},
-     {path: 'sellProduct', component: SellProductComponent},
      {path: 'pay/:total', component: PaymentComponent},
      {path: 'successPayment/:idUser', component: SuccessPaymentComponent},
      {path: 'updateName/:id', component: UpdateNameComponent},
      {path: 'updateEmail/:id', component: UpdateEmailComponent},
-     {path: 'updatePhoneNumber/:id', component: UpdatePhoneNumberComponent}
+     {path: 'updatePhoneNumber/:id', component: UpdatePhoneNumberComponent},
+     {path: 'createItem', component: CreateItemComponent, canActivate: [authGuard]}
 ];

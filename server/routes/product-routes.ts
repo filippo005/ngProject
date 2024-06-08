@@ -1,9 +1,36 @@
 import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import bodyParser from 'body-parser';
 
 const router = express.Router();
 const userModel = require("../Schemas/userSchema");
 const productModel = require('../Schemas/productSchema');
 const reviewModel = require('../Schemas/reviewSchema');
+
+router.use(bodyParser.urlencoded({extended: true}));
+router.use(bodyParser.json());
+
+//configuro il multer per l'upload dei file
+const storage = multer.diskStorage({
+     destination: function (req, file, cb) {
+       // Imposta la cartella di destinazione
+       cb(null, '../src/upload/');
+     },
+     filename: function (req, file, cb) {
+       // Imposta il nome del file caricato
+       cb(null, file.originalname);
+     }
+});
+
+const upload = multer({ storage: storage });
+
+// mi assicuro che la cartella 'upload' esista
+const uploadDir = path.resolve(__dirname, '../src/upload');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 router.get("/getProducts", async (req, res) => {
      const result = await productModel.find();
@@ -27,24 +54,31 @@ router.get("/getProduct/:idProduct", async (req, res) => {
      }
 });
 
-router.post("/registerProduct", async (req, res) => {
+router.post("/registerProduct", upload.single('file'), async (req, res) => {
      const name = req.body.name;
      const price = req.body.price;
      const category = req.body.category;
+     const file = req.file;
 
-     const data = {
-          name: name,
-          price: price,
-          category: category,
-          avgReviews: 0
+     if(file){
+          const data = {
+               name: name,
+               price: price,
+               category: category,
+               file: file.originalname,
+               avgReviews: 0
+          };
+
+          productModel.create(data)
+          .then((data: any) => {
+               data.reviews = [];
+          })
+          .catch((err: any) => console.log(err));
+          res.json({status: 200});
      }
-
-     productModel.create(data)
-     .then((data: any) => {
-          data.reviews = [];
-     })
-     .catch((err: any) => console.log(err));
-     res.json({status: 200});
+     else{
+          res.json({staus: 400});
+     }
 });
 
 router.post("/addReview", async (req, res) => {

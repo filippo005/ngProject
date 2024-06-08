@@ -81,52 +81,50 @@ export class HomeComponent implements OnInit{
     ){}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
-      next: (data: any) => {
-        if(data.status == 200){
-          this.products = data.products;
-        }
-        else{
-          console.log("Non ci sono prodotti");
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        this.filteredProducts = this.products;
-      }
-    });
-
-    setTimeout(() => {
-      if(this.cookieService.check('_ssU')){
-        const token = this.cookieService.get('_ssU');
-        const tokenInfo: any = jwtDecode(token);
-        this.idUser = tokenInfo.id;
-        this.authService.fetchUserData(this.idUser).subscribe({
+    if(this.cookieService.check('_ssU')){
+      const token = this.cookieService.get('_ssU');
+      const tokenInfo: any = jwtDecode(token);
+      this.idUser = tokenInfo.id;
+      this.authService.fetchUserData(this.idUser).subscribe({
+        next: (data: any) => {
+          this.userName = data.name;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          this.cartService.getItems(this.idUser).subscribe({
           next: (data: any) => {
-            this.userName = data.name;
+            if(data.status == 200){
+              this.countCartItems = data.items.length;
+            }
           },
           error: (err) => {
             console.log(err);
           },
           complete: () => {
-            this.cartService.getItems(this.idUser).subscribe({
-            next: (data: any) => {
-              if(data.status == 200){
-                this.countCartItems = data.items.length;
+            this.productService.getProducts().subscribe({
+              next: (data: any) => {
+                if(data.status == 200){
+                  this.products = data.products;
+                }
+                else{
+                  console.log("Non ci sono prodotti");
+                }
+              },
+              error: (err) => {
+                console.log(err);
+              },
+              complete: () => {
+                this.filteredProducts = this.products;
+                this.loaded = true;
               }
-            },
-            error: (err) => {
-              console.log(err);
-            }
-          })
+            });
           }
-        });
-      }
-
-      this.loaded = true;
-    }, 1000);
+        })
+        }
+      });
+    }
 
     categoriesList.categories.sort((a:any, b:any) => {
       if(a.value < b.value) return -1;

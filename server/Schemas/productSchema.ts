@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
      name: String,
      price: Number,
      category: String,
+     file: String,
      avgReviews: Number,
      reviews: [reviewSchema]
 });
